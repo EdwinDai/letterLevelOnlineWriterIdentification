@@ -6,8 +6,9 @@ from itertools import product
 matplotlib.use('TkAgg')
 matplotlib.rc("font", family='Microsoft YaHei')
 
+rootPath = r'Task1'
 # rootPath = r'../../datasets/Task1/Task1'
-rootPath = r'E:\file\Code\Python\datasets\Task1\Task1'
+# rootPath = r'E:\file\Code\Python\datasets\Task1\Task1'
 # fileaddr = r'E:\file\Code\Python\datasets\Task1\Task1\U1S1.TXT'
 # fileNameList = ['U1S1.TXT', 'U1S30.TXT', 'U1S20.TXT', 'U14S40.TXT', 'U35S16.TXT', 'U15S3.TXT']
 # fileName = 'U15S3.TXT'
