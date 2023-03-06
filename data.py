@@ -3,8 +3,8 @@ import torch
 import os
 from utils import isGenuineOrForgery, parseTxt2data, mixTxt
 
-# rootPath = r'../../datasets/Task1/Task1'
-rootPath = r'E:\file\Code\Python\datasets\Task1\Task1'
+rootPath = r'Task1'
+# rootPath = r'E:\file\Code\Python\datasets\Task1\Task1'
 # rootPath = '../datasets/Task1'
 # fileaddr = r'E:\file\Code\Python\datasets\Task1\Task1\U1S1.TXT'
 # fileNameList = ['U1S1.TXT', 'U1S30.TXT', 'U1S20.TXT', 'U14S40.TXT', 'U35S16.TXT', 'U15S3.TXT']
