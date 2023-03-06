@@ -7,6 +7,7 @@ def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
     print('Current Epoch:', currentEpoch)
     size = len(dataloader.dataset)
     for batch, (X, y) in enumerate(dataloader):
+        y = y.cuda()
         # Compute prediction and loss
         pred = model(X)
         loss = loss_fn(pred, y)
@@ -34,6 +35,7 @@ def test(dataloader, model, loss_fn, writer, currentEpoch):
     test_loss, correct = 0, 0
     with torch.no_grad():
         for X, y in dataloader:
+            y = y.cuda()
             pred = model(X)
             test_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()

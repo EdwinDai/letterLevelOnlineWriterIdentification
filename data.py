@@ -16,8 +16,10 @@ class Dataset_SVC2004(Dataset):
 
     def __getitem__(self, index):
         labelFileName, testFilename, label = self.txtList[index]
-        labelPath = os.path.join(rootPath, labelFileName + '.txt')
-        testPath = os.path.join(rootPath, testFilename + '.txt')
+        # labelPath = os.path.join(rootPath, labelFileName + '.txt')
+        labelPath = os.path.join(rootPath, labelFileName + '.TXT')
+        # testPath = os.path.join(rootPath, testFilename + '.txt')
+        testPath = os.path.join(rootPath, testFilename + '.TXT')
         labelData = parseTxt2data(labelPath)
         testData = parseTxt2data(testPath)
         labelData = torch.tensor(labelData, dtype=torch.float)

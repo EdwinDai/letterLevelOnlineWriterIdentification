@@ -23,6 +23,8 @@ class NeuralNetwork(nn.Module):
 
     def forward(self, x):
         x1, x2 = x
+        x1 = x1.cuda()
+        x2 = x2.cuda()
         y1 = self.forward_once(x1)
         y2 = self.forward_once(x2)
         output = torch.concat([y1, y2], dim=1)
