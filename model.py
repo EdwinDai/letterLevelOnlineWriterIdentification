@@ -15,12 +15,15 @@ class NeuralNetwork(nn.Module):
         self.linear1 = nn.Linear(32, 64)
         self.linear2 = nn.Linear(16, 2)
         self.softmax = nn.Softmax(dim=-1)
+        self.dropout = nn.Dropout(p=0.2)
 
     def forward_once(self, x):
         y, _ = self.lstm1(x)  # [b,300,3] [b,300,32]
-        y = self.linear1(y)  # [b,300,32] [b,300,64]
         y = self.dropout(y)
+        y = self.linear1(y)  # [b,300,32] [b,300,64]
+        # y = self.dropout(y)
         y, _ = self.lstm2(y)  # [b,300,64] [b,300,16]
+        y = self.dropout(y)
         return y
 
     def forward(self, x):

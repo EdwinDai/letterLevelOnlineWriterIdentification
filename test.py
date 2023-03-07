@@ -34,7 +34,7 @@ train_dataset, test_dataset = random_split(
     generator=torch.Generator().manual_seed(1)
 )
 train_dataloader = DataLoader(train_dataset, batch_size=128, shuffle=True)
-test_dataloader = DataLoader(test_dataset, batch_size=128, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
 model = NeuralNetwork().cuda()
 
