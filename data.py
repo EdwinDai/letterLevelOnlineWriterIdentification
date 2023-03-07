@@ -31,12 +31,12 @@ class Dataset_SVC2004(Dataset):
         return len(self.txtList)
 
 
-if __name__ == '__main__':
-    dataset = Dataset_SVC2004()
-    train_dataloader = DataLoader(dataset, batch_size=4, shuffle=False)
-    for x, y in train_dataloader:
-        x1, x2 = x
-        print(x1.shape)
-        print(x2.shape)
-        print(y.shape)
-        break
+# if __name__ == '__main__':
+#     dataset = Dataset_SVC2004()
+#     train_dataloader = DataLoader(dataset, batch_size=4, shuffle=False)
+#     for x, y in train_dataloader:
+#         x1, x2 = x
+#         print(x1.shape)
+#         print(x2.shape)
+#         print(y.shape)
+#         break
