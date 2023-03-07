@@ -6,9 +6,11 @@ from itertools import product
 matplotlib.use('TkAgg')
 matplotlib.rc("font", family='Microsoft YaHei')
 
-rootPath = r'Task1'
-# rootPath = r'../../datasets/Task1/Task1'
+# rootPath = r'Task1'
+
 # rootPath = r'E:\file\Code\Python\datasets\Task1\Task1'
+
+
 # fileaddr = r'E:\file\Code\Python\datasets\Task1\Task1\U1S1.TXT'
 # fileNameList = ['U1S1.TXT', 'U1S30.TXT', 'U1S20.TXT', 'U14S40.TXT', 'U35S16.TXT', 'U15S3.TXT']
 # fileName = 'U15S3.TXT'
@@ -164,9 +166,9 @@ def showStatistics(rootPath: str, method: str):
     plt.show()
 
 
-def mixTxt(usernum: int):
+def mixTxtSameWriter(usernum: int):
     '''
-    对签名进行两两配对
+    对签名进行两两配对(同一作者名下genuine and skilled forgery)
     :param UserId:
     :return: list[[Sig1,Sig1],[Sig1,Sig2]...]
     '''
@@ -187,6 +189,33 @@ def mixTxt(usernum: int):
     return resList
 
 
-if __name__ == '__main__':
-    res = mixTxt(40)
-    print(res)
+def mixTxtDifferentWriter(usernum: int):
+    '''
+    对签名进行两两配对(不同作者名下genuine and forgery)
+    :param UserId:
+    :return: list[[Sig1,Sig1],[Sig1,Sig2]...]
+    '''
+    resList = []
+    for userId in range(1, usernum + 1):
+        labelSigList = []
+        testSigList = []
+        for i in range(1, 21):
+            labelSigList.append('U' + str(userId) + 'S' + str(i))
+        for testUserId in range(1, 41):
+            if testUserId == userId:
+                continue
+            if len(testSigList) == 20:
+                break
+            testSigList.append('U' + str(testUserId) + 'S' + str(1))
+        trueRes = product(labelSigList, labelSigList)
+        falseRes = product(labelSigList, testSigList)
+        for x, y in list(trueRes):
+            resList.append([x, y, 1])
+        for x, y in list(falseRes):
+            resList.append([x, y, 0])
+    return resList
+
+
+# if __name__ == '__main__':
+#     res = mixTxtDifferentWriter(40)
+#     print(len(res))

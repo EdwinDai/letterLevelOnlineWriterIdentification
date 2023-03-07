@@ -9,7 +9,7 @@ from torchvision import datasets, transforms
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
-        self.lstm = nn.LSTM(input_size=3, hidden_size=80, num_layers=1, bidirectional=False)
+        self.lstm = nn.LSTM(input_size=3, hidden_size=80, num_layers=4, bidirectional=False)
 
         self.linear1 = nn.Linear(80, 2)
         self.softmax = nn.Softmax(dim=1)
