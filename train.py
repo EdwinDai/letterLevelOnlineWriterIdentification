@@ -22,9 +22,13 @@ def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
             loss, current = loss.item(), (batch + 1) * 128
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
     correct /= size
-    print(f"Train Error: \n Accuracy: {(100 * correct):>0.01f}%\n")
+    print(f"Train Error: \n Accuracy: {(100 * correct):>0.01f}%")
     writer.add_scalar(tag="loss/train",
                       scalar_value=loss,
+                      global_step=currentEpoch
+                      )
+    writer.add_scalar(tag="accuracy/train",
+                      scalar_value=correct * 100,
                       global_step=currentEpoch
                       )
     # path = os.path.join(r'E:\file\Code\deepLearning\signature', currentEpoch + '.pth')

@@ -46,7 +46,7 @@ for i in range(epoch):
     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
     test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
 
-# for x, y in dataloader:
+# for x, y in train_dataloader:
 #     # print(x.shape)
 #     res = model(x)
 #     print(res.shape)
