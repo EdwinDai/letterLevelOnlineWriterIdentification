@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 from itertools import product
 
-matplotlib.use('TkAgg')
+# matplotlib.use('TkAgg')
 matplotlib.rc("font", family='Microsoft YaHei')
 
 # rootPath = r'Task1'

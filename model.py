@@ -9,16 +9,20 @@ from torchvision import datasets, transforms
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
-        self.lstm = nn.LSTM(input_size=3, hidden_size=80, num_layers=4, bidirectional=False)
+        self.lstm1 = nn.LSTM(input_size=3, hidden_size=32, num_layers=1, bidirectional=False)
+        self.lstm2 = nn.LSTM(input_size=64, hidden_size=16, num_layers=1, bidirectional=False)
+        self.dropout = nn.Dropout(p=0.1)
 
-        self.linear1 = nn.Linear(80, 2)
+        self.linear1 = nn.Linear(32, 64)
+        self.linear2 = nn.Linear(32, 2)
+
         self.softmax = nn.Softmax(dim=1)
-        self.linear2 = nn.Linear(4,2)
-
 
     def forward_once(self, x):
-        y, _ = self.lstm(x)
+        y, _ = self.lstm1(x)
         y = self.linear1(y[:, -1, :])
+        y = self.dropout(y)
+        y, _ = self.lstm2(y)
         return y
 
     def forward(self, x):
