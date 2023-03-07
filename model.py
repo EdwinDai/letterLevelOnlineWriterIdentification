@@ -21,7 +21,6 @@ class NeuralNetwork(nn.Module):
         y, _ = self.lstm1(x)  # [b,300,3] [b,300,32]
         y = self.dropout(y)
         y = self.linear1(y)  # [b,300,32] [b,300,64]
-        # y = self.dropout(y)
         y, _ = self.lstm2(y)  # [b,300,64] [b,300,16]
         y = self.dropout(y)
         return y
