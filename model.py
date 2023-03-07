@@ -16,7 +16,7 @@ class NeuralNetwork(nn.Module):
         self.linear1 = nn.Linear(32, 64)
         self.linear2 = nn.Linear(32, 2)
 
-        self.softmax = nn.Softmax(dim=1)
+        self.softmax = nn.Softmax(dim=-1)
 
     def forward_once(self, x):
         y, _ = self.lstm1(x)

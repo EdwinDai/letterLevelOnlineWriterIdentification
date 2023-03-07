@@ -5,6 +5,7 @@ import os
 def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
     model.train()
     print('Current Epoch:', currentEpoch)
+    correct = 0
     size = len(dataloader.dataset)
     for batch, (X, y) in enumerate(dataloader):
         y = y.cuda()
@@ -16,10 +17,12 @@ def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
         loss.backward()
         optimizer.step()
 
+        correct += (pred.argmax(1) == y).type(torch.float).sum().item()
         if batch % 49 == 0:
             loss, current = loss.item(), (batch + 1) * 128
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
-
+    correct /= size
+    print(f"Train Error: \n Accuracy: {(100 * correct):>0.01f}%\n")
     writer.add_scalar(tag="loss/train",
                       scalar_value=loss,
                       global_step=currentEpoch
