@@ -41,7 +41,7 @@ model = NeuralNetwork().cuda()
 loss_fn = nn.CrossEntropyLoss().cuda()
 learning_rate = 0.001
 optimizer = torch.optim.Adam(model.parameters())
-epoch = 1
+epoch = 20
 for i in range(epoch):
     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
     test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
