@@ -1,4 +1,4 @@
-from model import NeuralNetwork
+from models.model2 import NeuralNetwork
 from data import Dataset_SVC2004
 from torch.utils.data import DataLoader
 from train import train, test
@@ -7,10 +7,9 @@ import torch
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import random_split
 import random
-import os
 import numpy as np
 
-logdir = r'./run/exp4'
+logdir = r'./run/exp5'
 writer = SummaryWriter(log_dir=logdir)
 
 
@@ -36,7 +35,7 @@ train_dataset, test_dataset = random_split(
 train_dataloader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
-model = NeuralNetwork()
+model = NeuralNetwork().cuda()
 loss_fn = nn.CrossEntropyLoss().cuda()
 learning_rate = 0.001
 optimizer = torch.optim.Adam(model.parameters())
@@ -59,6 +58,5 @@ for i in range(epoch):
 #     break
 # paras = model.parameters()
 # total = sum([param.nelement() for param in model.parameters()])
-#
 # print("Number of parameter: %.2fM" % (total / 1e6))
 

@@ -1,5 +1,5 @@
 import torch
-from model import NeuralNetwork
+from models.model import NeuralNetwork
 
 
 if __name__ == '__main__':
