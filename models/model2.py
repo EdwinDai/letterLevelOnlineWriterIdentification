@@ -9,9 +9,9 @@ from torchvision import datasets, transforms
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
-        self.lstm1 = nn.LSTM(input_size=3, hidden_size=30, num_layers=1,
+        self.lstm1 = nn.LSTM(input_size=3, hidden_size=30, num_layers=2,
                              bidirectional=False)  # [b,300,3] [b,300,30]
-        self.lstm2 = nn.LSTM(input_size=60, hidden_size=120, num_layers=1,
+        self.lstm2 = nn.LSTM(input_size=60, hidden_size=120, num_layers=2,
                              bidirectional=False)  # [b,300,60] [b,300,120]
         self.siamese1 = nn.Sequential(  # [b,300,30] [b,300,60]
             nn.Linear(30, 60),
@@ -52,6 +52,9 @@ class NeuralNetwork(nn.Module):
         x1, x2 = x
         x1 = x1.cuda()
         x2 = x2.cuda()
+
+        # x1 = x[:, 0]
+        # x2 = x[:, 1]
 
         y1 = self.forward_once(x1)  # [b,300,180]
         y2 = self.forward_once(x2)  # [b,300,180]

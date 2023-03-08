@@ -1,10 +1,10 @@
 import torch
-from models.model import NeuralNetwork
-
+from models.model2 import NeuralNetwork
+from tensorboardX import SummaryWriter
 
 if __name__ == '__main__':
-    x1 = torch.randn(300, 3)
-    x2 = torch.randn(300, 3)
-    input1 = (x1, x2)
+    x = torch.randn(8, 2, 300, 3)
     model = NeuralNetwork()
-    torch.onnx.export(model, input1, 'model.onnx')
+    writer = SummaryWriter('run/exp5')
+    writer.add_graph(model, input_to_model=x)
+    writer.close()

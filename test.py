@@ -9,7 +9,7 @@ from torch.utils.data import random_split
 import random
 import numpy as np
 
-logdir = r'./run/model2b64lr401'
+logdir = r'./run/exp5'
 writer = SummaryWriter(log_dir=logdir)
 
 
@@ -37,14 +37,16 @@ test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
 model = NeuralNetwork().cuda()
 loss_fn = nn.CrossEntropyLoss().cuda()
-learning_rate = 0.0001
+learning_rate = 0.001
 optimizer = torch.optim.Adam(model.parameters(), learning_rate)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
 epoch = 20
 
 for i in range(epoch):
     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
     test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
+    scheduler.step()
 
 # for x, y in train_dataloader:
 #     x1, x2 = x
