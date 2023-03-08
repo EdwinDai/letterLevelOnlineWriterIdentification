@@ -1,4 +1,4 @@
-from models.model2 import NeuralNetwork
+from models.model3 import NeuralNetwork
 from data import Dataset_SVC2004
 from torch.utils.data import DataLoader
 from train import train, test
@@ -9,7 +9,7 @@ from torch.utils.data import random_split
 import random
 import numpy as np
 
-logdir = r'./run/exp5'
+logdir = r'./run/model3b32'
 writer = SummaryWriter(log_dir=logdir)
 
 
@@ -32,8 +32,8 @@ train_dataset, test_dataset = random_split(
     lengths=[25600, 6400],
     generator=torch.Generator().manual_seed(1)
 )
-train_dataloader = DataLoader(train_dataset, batch_size=128, shuffle=True)
-test_dataloader = DataLoader(test_dataset, batch_size=128, shuffle=False)
+train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
 model = NeuralNetwork().cuda()
 loss_fn = nn.CrossEntropyLoss().cuda()
