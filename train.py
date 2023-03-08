@@ -18,8 +18,8 @@ def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
         optimizer.step()
 
         correct += (pred.argmax(1) == y).type(torch.float).sum().item()
-        if batch % 199 == 0:
-            loss, current = loss.item(), (batch + 1) * 32
+        if batch % 99 == 0:
+            loss, current = loss.item(), (batch + 1) * 64
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
     correct /= size
     print(f"Train Error: \n Accuracy: {(100 * correct):>0.01f}%")
