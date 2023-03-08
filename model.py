@@ -50,8 +50,8 @@ class NeuralNetwork(nn.Module):
 
     def forward(self, x):
         x1, x2 = x
-        # x1 = x1.cuda()
-        # x2 = x2.cuda()
+        x1 = x1.cuda()
+        x2 = x2.cuda()
 
         y1 = self.forward_once(x1)  # [b,300,256]
         y2 = self.forward_once(x2)  # [b,300,256]
