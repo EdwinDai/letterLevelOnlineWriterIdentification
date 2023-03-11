@@ -1,4 +1,4 @@
-from models.model2 import NeuralNetwork
+from models.model5 import NeuralNetwork
 from data import Dataset_SVC2004
 from torch.utils.data import DataLoader
 from train import train, test
@@ -12,6 +12,7 @@ import numpy as np
 logdir = r'./run/exp5'
 writer = SummaryWriter(log_dir=logdir)
 
+cuda = torch.device('cuda')
 
 def setup_seed(seed):
     torch.manual_seed(seed)
@@ -24,7 +25,7 @@ def setup_seed(seed):
 setup_seed(1)
 
 dataset = Dataset_SVC2004()
-# dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
 
 
 train_dataset, test_dataset = random_split(
@@ -41,7 +42,7 @@ learning_rate = 0.001
 optimizer = torch.optim.Adam(model.parameters(), learning_rate)
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-epoch = 20
+epoch = 2
 
 for i in range(epoch):
     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
@@ -61,3 +62,9 @@ for i in range(epoch):
 # paras = model.parameters()
 # total = sum([param.nelement() for param in model.parameters()])
 # print("Number of parameter: %.2fM" % (total / 1e6))
+
+
+m = nn.Conv1d(16, 33, 3, stride=1)
+input = torch.randn(20, 16, 50)
+output = m(input)
+print(output.shape)

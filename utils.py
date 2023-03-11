@@ -3,15 +3,18 @@ import matplotlib.pyplot as plt
 import matplotlib
 from itertools import product
 
-# matplotlib.use('TkAgg')
+# 统计时打开
+matplotlib.use('TkAgg')
 matplotlib.rc("font", family='Microsoft YaHei')
 
-# rootPath = r'Task1'
+rootPath = r'Task1'
 
 # rootPath = r'E:\file\Code\Python\datasets\Task1\Task1'
 
 
-# fileaddr = r'E:\file\Code\Python\datasets\Task1\Task1\U1S1.TXT'
+fileaddr = r'Task1\U2S1.TXT'
+
+
 # fileNameList = ['U1S1.TXT', 'U1S30.TXT', 'U1S20.TXT', 'U14S40.TXT', 'U35S16.TXT', 'U15S3.TXT']
 # fileName = 'U15S3.TXT'
 # destaddr = r'E:\file\Code\Python\datasets\Task1'
@@ -44,11 +47,17 @@ def parseTxt2data(filePath):
         for idx, line in enumerate(txt):
             lineData = line.split(' ')
             coordinate.append([int(lineData[0]), int(lineData[1]), int(lineData[3])])
-        while (len(coordinate) < 300):
-            coordinate.append([0, 0, 0])
-        if len(coordinate) > 300:
-            coordinate = coordinate[:300]
+        # 补0/截断至300长度
+        # coordinate = trim2length(coordinate)
         return coordinate
+
+
+def trim2length(coordinate):
+    while (len(coordinate) < 300):
+        coordinate.append([0, 0, 0])
+    if len(coordinate) > 300:
+        coordinate = coordinate[:300]
+    return coordinate
 
 
 def calcSeqLength(rootPath):
@@ -154,6 +163,11 @@ def showStatistics(rootPath: str, method: str):
         x = '序列长度'
         y = '序列数量'
         d = 30
+    elif method == 'calcSigSize':
+        data = calcSeqLength(rootPath)
+        x = '签名尺寸'
+        y = '签名数量'
+        d = 20
     else:
         print('wrong method')
         return
@@ -216,6 +230,56 @@ def mixTxtDifferentWriter(usernum: int):
     return resList
 
 
-# if __name__ == '__main__':
-#     res = mixTxtDifferentWriter(40)
-#     print(len(res))
+def move2TopLeft(fileaddr):
+    '''
+    将签名移动到左上角
+    :param rootPath:
+    :return:
+    '''
+    xmin = 9999
+    ymin = 9999
+    xmax = 0
+    ymax = 0
+    signature = parseTxt2data(fileaddr)
+    for point_data in signature:
+        xmin = point_data[0] if point_data[0] < xmin else xmin
+        ymin = point_data[1] if point_data[1] < ymin else ymin
+        xmax = point_data[0] if point_data[0] > xmax else xmax
+        ymax = point_data[1] if point_data[1] > ymax else ymax
+    for point_data in signature:
+        point_data[0] = int(point_data[0]) - xmin
+        point_data[1] = int(point_data[1]) - ymin
+    length = xmax - xmin
+    height = ymax - ymin
+    print(length, height)
+    print(length*height)
+    print(xmin, ymin, xmax, ymax)
+    return signature
+
+
+def calcSigSize(rootPath):
+    # 240
+    txtNameList = os.listdir(rootPath)
+    size_list = []
+    for txtName in txtNameList:
+        txtPath = os.path.join(rootPath, txtName)
+        signature = move2TopLeft(txtPath)
+        xmin = 9999
+        ymin = 9999
+        xmax = 0
+        ymax = 0
+        length = 0
+        height = 0
+        for point_data in signature:
+            xmin = point_data[0] if point_data[0] < xmin else xmin
+            ymin = point_data[1] if point_data[1] < ymin else ymin
+            xmax = point_data[0] if point_data[0] > xmax else xmax
+            ymax = point_data[1] if point_data[1] > ymax else ymax
+            length = xmax - xmin
+            height = ymax - ymin
+        size_list.append([length * height])
+    return size_list
+
+
+if __name__ == '__main__':
+    move2TopLeft(fileaddr)
