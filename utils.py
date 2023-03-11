@@ -5,14 +5,14 @@ from itertools import product
 
 # 统计时打开
 matplotlib.use('TkAgg')
-matplotlib.rc("font", family='Microsoft YaHei')
+# matplotlib.rc("font", family='Microsoft YaHei')
 
 rootPath = r'Task1'
 
 # rootPath = r'E:\file\Code\Python\datasets\Task1\Task1'
 
 
-fileaddr = r'Task1\U2S1.TXT'
+fileaddr = r'Task1/U1S1.TXT'
 
 
 # fileNameList = ['U1S1.TXT', 'U1S30.TXT', 'U1S20.TXT', 'U14S40.TXT', 'U35S16.TXT', 'U15S3.TXT']
@@ -167,7 +167,7 @@ def showStatistics(rootPath: str, method: str):
         data = calcSeqLength(rootPath)
         x = '签名尺寸'
         y = '签名数量'
-        d = 20
+        d = 30
     else:
         print('wrong method')
         return
@@ -244,16 +244,15 @@ def move2TopLeft(fileaddr):
     for point_data in signature:
         xmin = point_data[0] if point_data[0] < xmin else xmin
         ymin = point_data[1] if point_data[1] < ymin else ymin
-        xmax = point_data[0] if point_data[0] > xmax else xmax
-        ymax = point_data[1] if point_data[1] > ymax else ymax
+        # xmax = point_data[0] if point_data[0] > xmax else xmax
+        # ymax = point_data[1] if point_data[1] > ymax else ymax
     for point_data in signature:
         point_data[0] = int(point_data[0]) - xmin
         point_data[1] = int(point_data[1]) - ymin
-    length = xmax - xmin
-    height = ymax - ymin
-    print(length, height)
-    print(length*height)
-    print(xmin, ymin, xmax, ymax)
+    # length = xmax - xmin
+    # height = ymax - ymin
+    # print(length, height)
+    # print(length * height)
     return signature
 
 
@@ -277,9 +276,27 @@ def calcSigSize(rootPath):
             ymax = point_data[1] if point_data[1] > ymax else ymax
             length = xmax - xmin
             height = ymax - ymin
-        size_list.append([length * height])
+        size_list.append([(length * height) / 100000])
     return size_list
 
 
+def normalizeSig(signature):
+    '''
+    :param:signature
+    :return:NormalizedSignature
+    '''
+    xmax = 0
+    ymax = 0
+    for point_data in signature:
+        xmax = point_data[0] if point_data[0] > xmax else xmax
+        ymax = point_data[1] if point_data[1] > ymax else ymax
+    for point_data in signature:
+        point_data[0] = int(point_data[0]) / xmax
+        point_data[1] = int(point_data[1]) / ymax
+    return signature
+
+
 if __name__ == '__main__':
-    move2TopLeft(fileaddr)
+# showStatistics(rootPath, 'calcSigSize')
+    sig = move2TopLeft(fileaddr)
+    sig = normalizeSig(sig)

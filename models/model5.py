@@ -9,43 +9,16 @@ from torchvision import datasets, transforms
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
-        self.lstm1 = nn.LSTM(input_size=3, hidden_size=30, num_layers=1,
+        self.lstm1 = nn.LSTM(input_size=3, hidden_size=32, num_layers=1,
                              bidirectional=False)  # [b,300,3] [b,300,30]
-        self.lstm2 = nn.LSTM(input_size=60, hidden_size=120, num_layers=1,
+        self.conv1 = nn.Conv1d(300, 64, 3)
+        self.lstm2 = nn.LSTM(input_size=60, hidden_size=64, num_layers=1,
                              bidirectional=False)  # [b,300,60] [b,300,120]
-        self.siamese1 = nn.Sequential(  # [b,300,30] [b,300,60]
-            nn.Linear(30, 60),
-            nn.ReLU(),
-            nn.Dropout(p=0.1)
-        )
-        self.siamese2 = nn.Sequential(  # [b,300,120] [b,300,180]
-            nn.Linear(120, 180),
-            nn.ReLU(),
-            nn.Dropout(p=0.1)
-        )
-
-        self.lstm3 = nn.LSTM(input_size=360, hidden_size=180, num_layers=1,
-                             bidirectional=False)  # [b,300,360] [b,300,180]
-        self.lstm4 = nn.LSTM(input_size=120, hidden_size=60, num_layers=1,
-                             bidirectional=False)  # [b,300,120] [b,300,60]
-        self.together1 = nn.Sequential(  # [b,300,180] [b,300,120]
-            nn.Linear(180, 120),
-            nn.ReLU(),
-            nn.Dropout(p=0.1),
-        )
-        self.together2 = nn.Sequential(  # [b,300,60] [b,300,30]
-            nn.Linear(60, 30),
-            nn.ReLU(),
-            nn.Dropout(p=0.1))
-
-        self.softmax = nn.Softmax(dim=-1)
-        self.linear = nn.Linear(30, 2)
 
     def forward_once(self, x):
-        y, _ = self.lstm1(x)  # [b,300,30]
-        y = self.siamese1(y)  # [b,300,60]
-        y, _ = self.lstm2(y)  # [b,300,120]
-        y = self.siamese2(y)  # [b,300,180]
+        y1, _ = self.lstm1(x)  # [b,300,30]
+        y2 = self.conv1(x)
+        y = y1 + y2
         return y
 
     def forward(self, x):

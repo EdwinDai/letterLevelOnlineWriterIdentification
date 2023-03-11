@@ -42,7 +42,7 @@ learning_rate = 0.001
 optimizer = torch.optim.Adam(model.parameters(), learning_rate)
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-epoch = 2
+epoch = 10
 
 for i in range(epoch):
     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
