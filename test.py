@@ -37,7 +37,7 @@ train_dataset, test_dataset = random_split(
 train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-model = NeuralNetwork()
+model = NeuralNetwork().cuda()
 loss_fn = nn.CrossEntropyLoss().cuda()
 learning_rate = 0.001
 optimizer = torch.optim.Adam(model.parameters())
@@ -50,16 +50,16 @@ for i in range(epoch):
     test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
     # scheduler.step()
 
-# for x, y in train_dataloader:
-#     x1, x2 = x
-#     print(x1.shape)
-#     print(x2.shape)
-#     res = model(x)
-#     print(res.shape)
-#     print(res)
-#     print(y.shape)
-#     print(y)
-#     break
+for x, y in train_dataloader:
+    x1, x2 = x
+    print(x1.shape)
+    print(x2.shape)
+    res = model(x)
+    print(res.shape)
+    print(res)
+    print(y.shape)
+    print(y)
+    break
 # paras = model.parameters()
 total = sum([param.nelement() for param in model.parameters()])
 print("Number of parameter: %.2fM" % (total / 1e6))

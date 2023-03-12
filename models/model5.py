@@ -9,9 +9,9 @@ from torchvision import datasets, transforms
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
-        self.lstm1 = nn.LSTM(input_size=3, hidden_size=64, num_layers=2,
+        self.lstm1 = nn.LSTM(input_size=3, hidden_size=32, num_layers=2,
                              bidirectional=True)
-        self.lstm2 = nn.LSTM(input_size=128, hidden_size=64, num_layers=2,
+        self.lstm2 = nn.LSTM(input_size=64, hidden_size=48, num_layers=2,
                              bidirectional=True)
         self.dropout = nn.Dropout(p=0.2)
 
@@ -47,8 +47,8 @@ class NeuralNetwork(nn.Module):
             nn.Linear(64, 2),
             nn.Softmax(-1)
         )
-        self.linear1 = nn.Linear(256, 64)
-        self.linear2 = nn.Linear(64, 2)
+        self.linear1 = nn.Linear(192, 48)
+        self.linear2 = nn.Linear(48, 2)
 
     def forward_once(self, x):
         y1, _ = self.lstm1(x)
@@ -57,15 +57,15 @@ class NeuralNetwork(nn.Module):
         y1 = self.dropout(y1)
         y1 = y1[:, -1, :]  # [-1,1,128]
 
-        y2 = self.conv1(x)
+        y2 = self.conv1(x) #[-1,32,3]
         y21 = y2.view(-1, 1, 256)
 
         y22 = self.residual(y2)  # [-1,32,8]
         y22 = y22.view(-1, 1, 256)
 
         y2 = self.relu(y21 + y22)
-        y2 = self.avePool(y2)  # [-1,1,128]
-        y2 = y2.view(-1, 128)
+        # y2 = self.avePool(y2)  # [-1,1,128]
+        y2 = y2.view(-1, 96)
 
         y = y1 + y2
         return y
