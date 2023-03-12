@@ -1,9 +1,11 @@
 from torch.utils.data import Dataset, DataLoader
 import torch
 import os
-from utils import mixTxtDifferentWriter, parseTxt2data, trim2length, move2TopLeft
+from utils import mixTxtDifferentWriter, parseTxt2data, trim2length, move2TopLeft, mixTxtSameWriter
 
 rootPath = r'Task1'
+
+
 # rootPath = r'Task1Para8'
 
 
@@ -15,7 +17,7 @@ rootPath = r'Task1'
 
 class Dataset_SVC2004(Dataset):
     def __init__(self):
-        self.txtList = mixTxtDifferentWriter(40)
+        self.txtList = mixTxtSameWriter(40)
 
     def __getitem__(self, index):
         labelFileName, testFilename, label = self.txtList[index]
