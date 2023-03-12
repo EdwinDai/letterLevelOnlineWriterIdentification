@@ -49,12 +49,13 @@ def parseTxt2data(filePath):
     with open(filePath) as f:
         coordinate = []
         txt = f.readlines()
-        # txt = txt[1:]
+        txt = txt[1:]
         for idx, line in enumerate(txt):
             lineData = line.split(' ')
-            coordinate.append(
-                [float(lineData[0]), float(lineData[1]), float(lineData[2]), float(lineData[3]), float(lineData[4]),
-                 float(lineData[5]), float(lineData[6]), float(lineData[7][:-1])])
+            coordinate.append([float(lineData[0]), float(lineData[1]), float(lineData[3])])
+            # coordinate.append(
+            #     [float(lineData[0]), float(lineData[1]), float(lineData[2]), float(lineData[3]), float(lineData[4]),
+            #      float(lineData[5]), float(lineData[6]), float(lineData[7][:-1])])
         # 补0/截断至300长度
         # coordinate = trim2length(coordinate)
         return coordinate
@@ -62,7 +63,7 @@ def parseTxt2data(filePath):
 
 def trim2length(coordinate):
     while (len(coordinate) < 300):
-        coordinate.append([0, 0, 0, 0, 0, 0, 0, 0])
+        coordinate.append([0, 0, 0])
     if len(coordinate) > 300:
         coordinate = coordinate[:300]
     return coordinate

@@ -1,10 +1,10 @@
 from torch.utils.data import Dataset, DataLoader
 import torch
 import os
-from utils import mixTxtDifferentWriter, parseTxt2data, trim2length
+from utils import mixTxtDifferentWriter, parseTxt2data, trim2length, move2TopLeft
 
-# rootPath = r'Task1'
-rootPath = r'Task1Para8'
+rootPath = r'Task1'
+# rootPath = r'Task1Para8'
 
 
 # rootPath = r'E:\file\Code\Python\datasets\Task1\Task1'
@@ -22,8 +22,8 @@ class Dataset_SVC2004(Dataset):
         labelPath = os.path.join(rootPath, labelFileName + '.TXT')
         testPath = os.path.join(rootPath, testFilename + '.TXT')
 
-        labelData = trim2length(parseTxt2data(labelPath))
-        testData = trim2length(parseTxt2data(testPath))
+        labelData = trim2length(move2TopLeft(labelPath))
+        testData = trim2length(move2TopLeft(testPath))
 
         labelData = torch.tensor(labelData, dtype=torch.float)
         testData = torch.tensor(testData, dtype=torch.float)

@@ -9,9 +9,9 @@ from torchvision import datasets, transforms
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
-        self.lstm1 = nn.LSTM(input_size=8, hidden_size=64, num_layers=1,
+        self.lstm1 = nn.LSTM(input_size=3, hidden_size=64, num_layers=2,
                              bidirectional=True)
-        self.lstm2 = nn.LSTM(input_size=128, hidden_size=64, num_layers=1,
+        self.lstm2 = nn.LSTM(input_size=128, hidden_size=64, num_layers=2,
                              bidirectional=True)
         self.dropout = nn.Dropout(p=0.2)
 

@@ -9,10 +9,10 @@ from torch.utils.data import random_split
 import random
 import numpy as np
 
-logdir = r'./run/exp6'
-writer = SummaryWriter(log_dir=logdir)
+# logdir = r'./run/exp6'
+# writer = SummaryWriter(log_dir=logdir)
 
-cuda = torch.device('cuda')
+# cuda = torch.device('cuda')
 
 
 def setup_seed(seed):
@@ -34,20 +34,20 @@ train_dataset, test_dataset = random_split(
     lengths=[25600, 6400],
     generator=torch.Generator().manual_seed(1)
 )
-train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True)
-test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=False)
+train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-model = NeuralNetwork().cuda()
-loss_fn = nn.CrossEntropyLoss().cuda()
+model = NeuralNetwork()
+# loss_fn = nn.CrossEntropyLoss().cuda()
 # learning_rate = 0.001
-optimizer = torch.optim.Adam(model.parameters())
+# optimizer = torch.optim.Adam(model.parameters())
 # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-epoch = 20
-
-for i in range(epoch):
-    train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
-    test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
+# epoch = 20
+#
+# for i in range(epoch):
+#     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
+#     test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
     # scheduler.step()
 
 # for x, y in train_dataloader:
@@ -61,5 +61,5 @@ for i in range(epoch):
 #     print(y)
 #     break
 # paras = model.parameters()
-# total = sum([param.nelement() for param in model.parameters()])
-# print("Number of parameter: %.2fM" % (total / 1e6))
+total = sum([param.nelement() for param in model.parameters()])
+print("Number of parameter: %.2fM" % (total / 1e6))
