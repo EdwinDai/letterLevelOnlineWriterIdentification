@@ -64,7 +64,8 @@ class NeuralNetwork(nn.Module):
         y22 = y22.view(-1, 1, 256)
 
         y2 = self.relu(y21 + y22)
-        y2 = self.avePool(y2) #[-1,1,128]
+        y2 = self.avePool(y2)  # [-1,1,128]
+        y2 = y2.view(-1, 128)
 
         y = y1 + y2
         return y
@@ -79,6 +80,7 @@ class NeuralNetwork(nn.Module):
         y1 = self.forward_once(x1)
         y2 = self.forward_once(x2)
         y = torch.concat([y1, y2], dim=-1)
+        y = torch.squeeze(y)
         y = self.linear1(y)
         y = self.linear2(y)
         y = self.softmax(y)

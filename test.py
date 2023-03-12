@@ -34,13 +34,13 @@ train_dataset, test_dataset = random_split(
     lengths=[25600, 6400],
     generator=torch.Generator().manual_seed(1)
 )
-train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=False)
 
-model = NeuralNetwork()
+model = NeuralNetwork().cuda()
 loss_fn = nn.CrossEntropyLoss().cuda()
-learning_rate = 0.001
-optimizer = torch.optim.Adam(model.parameters(), learning_rate)
+# learning_rate = 0.001
+optimizer = torch.optim.Adam(model.parameters())
 # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
 epoch = 20
@@ -52,12 +52,10 @@ for i in range(epoch):
 
 # for x, y in train_dataloader:
 #     x1, x2 = x
-#     print(len(x))
 #     print(x1.shape)
 #     print(x2.shape)
 #     res = model(x)
 #     print(res.shape)
-#     # print(res)
 #     print(res)
 #     print(y.shape)
 #     print(y)
