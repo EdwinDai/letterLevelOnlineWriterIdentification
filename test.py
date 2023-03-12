@@ -12,7 +12,7 @@ import numpy as np
 logdir = r'./run/exp6'
 writer = SummaryWriter(log_dir=logdir)
 
-# cuda = torch.device('cuda')
+cuda = torch.device('cuda')
 
 
 def setup_seed(seed):
