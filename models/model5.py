@@ -58,17 +58,12 @@ class NeuralNetwork(nn.Module):
         y11 = self.softmax((self.tanh(y1 @ self.W)) @ self.U)
         y1 = torch.transpose(y1, -1, -2)
         y1 = y1 @ y11
-        print('y1', y1.shape)
 
         y2 = self.conv1(x)
         y22 = self.residual(y2)
-        print('y21', y2.shape)
         y2 = self.relu(y2 + y22)
-        print('y22', y2.shape)
         y2 = self.AvgPool(self.conv2(y2))
-        print('y23', y2.shape)
         y2 = y2.view(4, 64, 1)
-        print('y24', y2.shape)
         y = y1 + y2
         y = y.view(4, 1, 64)
         return y
@@ -83,6 +78,5 @@ class NeuralNetwork(nn.Module):
         y1 = self.forward_once(x1)
         y2 = self.forward_once(x2)
         y = torch.concat([y1, y2], dim=-1)
-        print('y3', y.shape)
         y = self.DiscrimNet(y)
         return y
