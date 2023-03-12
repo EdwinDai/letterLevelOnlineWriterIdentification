@@ -2,17 +2,23 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib
 from itertools import product
+import numpy as np
+import cv2
+import time
+import torch.nn as nn
+import torch
+
 
 # 统计时打开
-matplotlib.use('TkAgg')
+# matplotlib.use('TkAgg')
 # matplotlib.rc("font", family='Microsoft YaHei')
 
-rootPath = r'Task1'
+# rootPath = r'Task1'
 
 # rootPath = r'E:\file\Code\Python\datasets\Task1\Task1'
+# picAddr = r'E:\file\Code\Python\datasets\Task1\pictures'
 
-
-fileaddr = r'Task1/U1S1.TXT'
+# fileaddr = r'Task1Para8/U1S1.TXT'
 
 
 # fileNameList = ['U1S1.TXT', 'U1S30.TXT', 'U1S20.TXT', 'U14S40.TXT', 'U35S16.TXT', 'U15S3.TXT']
@@ -43,10 +49,12 @@ def parseTxt2data(filePath):
     with open(filePath) as f:
         coordinate = []
         txt = f.readlines()
-        txt = txt[1:]
+        # txt = txt[1:]
         for idx, line in enumerate(txt):
             lineData = line.split(' ')
-            coordinate.append([int(lineData[0]), int(lineData[1]), int(lineData[3])])
+            coordinate.append(
+                [float(lineData[0]), float(lineData[1]), float(lineData[2]), float(lineData[3]), float(lineData[4]),
+                 float(lineData[5]), float(lineData[6]), float(lineData[7][:-1])])
         # 补0/截断至300长度
         # coordinate = trim2length(coordinate)
         return coordinate
@@ -54,7 +62,7 @@ def parseTxt2data(filePath):
 
 def trim2length(coordinate):
     while (len(coordinate) < 300):
-        coordinate.append([0, 0, 0])
+        coordinate.append([0, 0, 0, 0, 0, 0, 0, 0])
     if len(coordinate) > 300:
         coordinate = coordinate[:300]
     return coordinate
@@ -244,6 +252,7 @@ def move2TopLeft(fileaddr):
     for point_data in signature:
         xmin = point_data[0] if point_data[0] < xmin else xmin
         ymin = point_data[1] if point_data[1] < ymin else ymin
+
         # xmax = point_data[0] if point_data[0] > xmax else xmax
         # ymax = point_data[1] if point_data[1] > ymax else ymax
     for point_data in signature:
@@ -280,8 +289,8 @@ def calcSigSize(rootPath):
     return size_list
 
 
-def normalizeSig(signature):
-    '''
+def normalizeSig1(signature):
+    '''归一化到[0,1]
     :param:signature
     :return:NormalizedSignature
     '''
@@ -296,7 +305,97 @@ def normalizeSig(signature):
     return signature
 
 
-if __name__ == '__main__':
-# showStatistics(rootPath, 'calcSigSize')
+def normalizeSig2(signature):
+    '''均值方差归一化
+    :param:signature
+    :return:NormalizedSignature
+    '''
+    x_sum1 = 0
+    x_sum2 = 0
+    y_sum1 = 0
+    y_sum2 = 0
+    sig_length = len(signature)
+    for point_data in signature:
+        x_sum1 += point_data[0]
+        y_sum1 += point_data[1]
+    x_average = x_sum1 / sig_length
+    y_average = y_sum1 / sig_length
+    for point_data in signature:
+        x_sum2 += (point_data[0] - x_average) ** 2
+        y_sum2 += (point_data[1] - y_average) ** 2
+    x_variance = x_sum2 / sig_length
+    y_variance = y_sum2 / sig_length
+    for point_data in signature:
+        point_data[0] = (point_data[0] - x_average) / (x_variance ** 0.5)
+        point_data[1] = (point_data[1] - y_average) / (y_variance ** 0.5)
+    return signature
+
+
+def drawSig(fileaddr, picName):
+    image = np.zeros((9999, 9999, 1), np.uint8)  # 创建一个黑色面板
     sig = move2TopLeft(fileaddr)
-    sig = normalizeSig(sig)
+    for i in range(len(sig) - 1):
+        if sig[i][3] != 0:
+            cv2.line(image, (sig[i][0], 9999 - sig[i][1]), (sig[i + 1][0], 9999 - sig[i + 1][1]), (255, 0, 0), 3)  # 画直线
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # 色彩空间转换
+    cv2.imwrite(os.path.join(picAddr, picName + '.jpg'), image)
+
+
+def get_parameters(sig, i):
+    x1 = sig[i][0]
+    y1 = sig[i][1]
+    x2 = sig[i + 1][0]
+    y2 = sig[i + 1][1]
+    p2_pen_down = sig[i + 1][3]
+    time1 = sig[i][2]
+    time2 = sig[i + 1][2]
+    time_interval = time2 - time1
+    # time_stamp = sig[0][2] - 1
+
+    tangent = (y2 - y1) / ((x2 - x1) if (x2 - x1) != 0 else 1)  # 4
+    abs_position = ((x1 ** 2) + (y1 ** 2)) ** 0.5  # 5
+    x_velocity = (((x2 - x1) ** 2) ** 0.5) / time_interval  # 6
+    y_velocity = (((y2 - y1) ** 2) ** 0.5) / time_interval  # 7
+    path_velocity = ((((y2 - y1) ** 2) + ((x2 - x1) ** 2)) ** 0.5) / time_interval  # 8
+    point_data = [x1, y1, sig[i][3], tangent, abs_position, x_velocity, y_velocity, path_velocity]
+    return point_data
+
+
+if __name__ == '__main__':
+    a = torch.randn(4, 1, 128)
+    b = torch.randn(64, 32)
+    conv1 = nn.Conv1d(1, 16, 3, padding=1)
+    conv2 = nn.Conv1d(16, 16, 3, padding=1)
+    maxpool = nn.MaxPool1d(2)
+    c = conv1(a)
+    c = maxpool(c)
+    print(c.shape)
+    c = conv2(c)
+    print(c.shape)
+
+    # 生成8params签名
+
+    # newPath = r'E:\file\Code\Python\datasets\Task1\Task1Para8'
+    # txtNameList = os.listdir(rootPath)
+    # for txtName in txtNameList:
+    #     txt_path = os.path.join(rootPath, txtName)
+    #     sig = move2TopLeft(fileaddr)
+    #     sig = normalizeSig1(sig)
+    #     with open(os.path.join(newPath, txtName), 'a') as f:
+    #         for i in range(len(sig) - 1):
+    #             sig[i] = get_parameters(sig, i)
+    #             my_string = ' '.join(map(str, sig[i]))
+    #             f.write(my_string + '\n')
+
+    # sig = parseTxt2data(fileaddr)
+    # print(sig)
+# showStatistics(rootPath, 'calcSigSize')
+# txtNameList = os.listdir(rootPath).0
+# for txtName in txtNameList:
+#     fileaddr = os.path.join(rootPath, txtName)
+#     picName = txtName[:-4]
+#     drawSig(fileaddr, picName)
+
+#     break
+# picName = 'U1S1'
+# print(os.path.join(picAddr, picName+'.jpg'))

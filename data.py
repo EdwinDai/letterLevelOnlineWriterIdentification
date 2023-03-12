@@ -1,9 +1,12 @@
 from torch.utils.data import Dataset, DataLoader
 import torch
 import os
-from utils import isGenuineOrForgery, parseTxt2data, mixTxtSameWriter, mixTxtDifferentWriter
+from utils import mixTxtDifferentWriter, parseTxt2data, trim2length
 
-rootPath = r'Task1'
+# rootPath = r'Task1'
+rootPath = r'Task1Para8'
+
+
 # rootPath = r'E:\file\Code\Python\datasets\Task1\Task1'
 # rootPath = '../datasets/Task1'
 # fileaddr = r'E:\file\Code\Python\datasets\Task1\Task1\U1S1.TXT'
@@ -20,8 +23,12 @@ class Dataset_SVC2004(Dataset):
         labelPath = os.path.join(rootPath, labelFileName + '.TXT')
         # testPath = os.path.join(rootPath, testFilename + '.txt')
         testPath = os.path.join(rootPath, testFilename + '.TXT')
-        labelData = parseTxt2data(labelPath)
-        testData = parseTxt2data(testPath)
+        # labelData = normalizeSig1(move2TopLeft(labelPath))
+        # testData = normalizeSig1(move2TopLeft(testPath))
+        # labelData = list(map(int, parseTxt2data(labelPath)))
+        # testData = list(map(int, parseTxt2data(testPath)))
+        labelData = trim2length(parseTxt2data(testPath))
+        testData = trim2length(parseTxt2data(testPath))
         labelData = torch.tensor(labelData, dtype=torch.float)
         testData = torch.tensor(testData, dtype=torch.float)
         label = torch.tensor(label, dtype=torch.long)
@@ -31,12 +38,14 @@ class Dataset_SVC2004(Dataset):
         return len(self.txtList)
 
 
-# if __name__ == '__main__':
-#     dataset = Dataset_SVC2004()
-#     train_dataloader = DataLoader(dataset, batch_size=4, shuffle=False)
-#     for x, y in train_dataloader:
-#         x1, x2 = x
-#         print(x1.shape)
-#         print(x2.shape)
-#         print(y.shape)
-#         break
+if __name__ == '__main__':
+    dataset = Dataset_SVC2004()
+    train_dataloader = DataLoader(dataset, batch_size=4, shuffle=False)
+    for x, y in train_dataloader:
+        x1, x2 = x
+        print(x1.shape)
+        print(x2.shape)
+        print(y.shape)
+        break
+
+    pass
