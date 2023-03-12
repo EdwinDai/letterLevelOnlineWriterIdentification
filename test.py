@@ -9,8 +9,8 @@ from torch.utils.data import random_split
 import random
 import numpy as np
 
-# logdir = r'./run/exp6'
-# writer = SummaryWriter(log_dir=logdir)
+logdir = r'./run/exp6'
+writer = SummaryWriter(log_dir=logdir)
 
 # cuda = torch.device('cuda')
 
