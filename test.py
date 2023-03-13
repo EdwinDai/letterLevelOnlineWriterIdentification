@@ -9,7 +9,7 @@ from torch.utils.data import random_split
 import random
 import numpy as np
 
-logdir = r'./run/exp7'
+logdir = r'./run/exp8'
 writer = SummaryWriter(log_dir=logdir)
 
 cuda = torch.device('cuda')
@@ -23,7 +23,7 @@ def setup_seed(seed):
     torch.backends.cudnn.deterministic = True
 
 
-setup_seed(1)
+setup_seed(2)
 
 dataset = Dataset_SVC2004()
 # dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
