@@ -49,7 +49,7 @@ def parseTxt2data(filePath):
     with open(filePath) as f:
         coordinate = []
         txt = f.readlines()
-        txt = txt[1:]
+        # txt = txt[1:]
         for idx, line in enumerate(txt):
             lineData = line.split(' ')
             # 3维数据
@@ -65,7 +65,9 @@ def parseTxt2data(filePath):
 
 def trim2length(coordinate):
     while (len(coordinate) < 300):
-        coordinate.append([0, 0, 0])
+        # coordinate.append([0, 0, 0])
+        coordinate.append([0, 0, 0, 0, 0, 0, 0, 0])
+
     if len(coordinate) > 300:
         coordinate = coordinate[:300]
     return coordinate

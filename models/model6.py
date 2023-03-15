@@ -9,7 +9,7 @@ from torchvision import datasets, transforms
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
-        self.lstm1 = nn.LSTM(input_size=3, hidden_size=32, num_layers=2,
+        self.lstm1 = nn.LSTM(input_size=8, hidden_size=32, num_layers=2,
                              bidirectional=True)
         self.lstm2 = nn.LSTM(input_size=64, hidden_size=64, num_layers=2,
                              bidirectional=True)
@@ -26,7 +26,7 @@ class NeuralNetwork(nn.Module):
 
         )
         self.residual = nn.Sequential(
-            nn.Conv1d(32, 64, 5, padding=1),
+            nn.Conv1d(32, 64, 3, padding=1),
             nn.BatchNorm1d(64),
             nn.ReLU(),
             nn.Conv1d(64, 32, 3, padding=1)

@@ -26,7 +26,6 @@ class Dataset_SVC2004(Dataset):
 
         labelData = trim2length(move2TopLeft(labelPath))
         testData = trim2length(move2TopLeft(testPath))
-
         labelData = torch.tensor(labelData, dtype=torch.float)
         testData = torch.tensor(testData, dtype=torch.float)
         label = torch.tensor(label, dtype=torch.long)
