@@ -363,16 +363,17 @@ def get_parameters(sig, i):
 
 
 if __name__ == '__main__':
-    a = torch.randn(4, 1, 128)
-    b = torch.randn(64, 32)
-    conv1 = nn.Conv1d(1, 16, 3, padding=1)
-    conv2 = nn.Conv1d(16, 16, 3, padding=1)
-    maxpool = nn.MaxPool1d(2)
-    c = conv1(a)
-    c = maxpool(c)
-    print(c.shape)
-    c = conv2(c)
-    print(c.shape)
+    mixTxtSameWriter(1)
+    # a = torch.randn(4, 1, 128)
+    # b = torch.randn(64, 32)
+    # conv1 = nn.Conv1d(1, 16, 3, padding=1)
+    # conv2 = nn.Conv1d(16, 16, 3, padding=1)
+    # maxpool = nn.MaxPool1d(2)
+    # c = conv1(a)
+    # c = maxpool(c)
+    # print(c.shape)
+    # c = conv2(c)
+    # print(c.shape)
 
     # 生成8params签名
 

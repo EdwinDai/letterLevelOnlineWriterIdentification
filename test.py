@@ -10,7 +10,7 @@ import random
 import numpy as np
 
 
-logdir = r'./run/exp8'
+logdir = r'./run/exp9'
 writer = SummaryWriter(log_dir=logdir)
 
 cuda = torch.device('cuda')
@@ -24,7 +24,7 @@ def setup_seed(seed):
     torch.backends.cudnn.deterministic = True
 
 
-setup_seed(2)
+setup_seed(1)
 
 dataset = Dataset_SVC2004()
 # dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
@@ -50,17 +50,21 @@ for i in range(epoch):
     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
     test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
     # scheduler.step()
-
-for x, y in train_dataloader:
-    x1, x2 = x
-    print(x1.shape)
-    print(x2.shape)
-    res = model(x)
-    print(res.shape)
-    print(res)
-    print(y.shape)
-    print(y)
-    break
+#
+# for x, y in train_dataloader:
+#     x1, x2 = x
+#     print(x1.shape)
+#     print(x2.shape)
+#     res = model(x)
+#     print(res.shape)
+#     print(res)
+#     print(y.shape)
+#     print(y)
+#     break
 # paras = model.parameters()
-total = sum([param.nelement() for param in model.parameters()])
-print("Number of parameter: %.2fM" % (total / 1e6))
+# total = sum([param.nelement() for param in model.parameters()])
+# print("Number of parameter: %.2fM" % (total / 1e6))
+
+# x = torch.randn(8, 2, 300, 3)
+# writer.add_graph(model, input_to_model=x)
+# writer.close()
