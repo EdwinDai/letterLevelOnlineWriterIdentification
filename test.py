@@ -1,4 +1,4 @@
-from models.model5 import NeuralNetwork
+from models.model6 import NeuralNetwork
 from data import Dataset_SVC2004
 from torch.utils.data import DataLoader
 from train import train, test
