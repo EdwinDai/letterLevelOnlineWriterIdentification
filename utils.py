@@ -362,8 +362,31 @@ def get_parameters(sig, i):
     return point_data
 
 
+def countDataDistribution(train_dataloader, test_dataloader):
+    true_label1 = 0
+    false_label1 = 0
+    true_label2 = 0
+    false_label2 = 0
+    for x, y in train_dataloader:
+        true_label1 += torch.sum(y).item()
+        false_label1 += (64 - torch.sum(y).item())
+    for x, y in test_dataloader:
+        true_label2 += torch.sum(y).item()
+        false_label2 += (64 - torch.sum(y).item())
+
+    print(f"训练集正标签数量: {true_label1}")
+    print(f"训练集负标签数量: {false_label1}")
+    print(f"训练集正负比例: {true_label1/false_label1}")
+
+    print(f"测试集负标签数量: {true_label2}")
+    print(f"测试集负标签数量: {false_label2}")
+    print(f"测试集正负比例: {true_label2 / false_label2}")
+
+
 if __name__ == '__main__':
-    mixTxtSameWriter(1)
+    pass
+
+    # mixTxtSameWriter(1)
     # a = torch.randn(4, 1, 128)
     # b = torch.randn(64, 32)
     # conv1 = nn.Conv1d(1, 16, 3, padding=1)
@@ -376,7 +399,6 @@ if __name__ == '__main__':
     # print(c.shape)
 
     # 生成8params签名
-
     # newPath = r'E:\file\Code\Python\datasets\Task1\Task1Para8'
     # txtNameList = os.listdir(rootPath)
     # for txtName in txtNameList:
@@ -391,6 +413,7 @@ if __name__ == '__main__':
 
     # sig = parseTxt2data(fileaddr)
     # print(sig)
+
 # showStatistics(rootPath, 'calcSigSize')
 # txtNameList = os.listdir(rootPath).0
 # for txtName in txtNameList:

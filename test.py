@@ -8,12 +8,13 @@ from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import random_split
 import random
 import numpy as np
+from utils import countDataDistribution
 
 
-logdir = r'./run/exp9'
-writer = SummaryWriter(log_dir=logdir)
+# logdir = r'./run/exp9'
+# writer = SummaryWriter(log_dir=logdir)
 
-cuda = torch.device('cuda')
+# cuda = torch.device('cuda')
 
 
 def setup_seed(seed):
@@ -24,7 +25,9 @@ def setup_seed(seed):
     torch.backends.cudnn.deterministic = True
 
 
-setup_seed(1)
+seed = 1
+
+setup_seed(seed)
 
 dataset = Dataset_SVC2004()
 # dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
@@ -33,22 +36,21 @@ dataset = Dataset_SVC2004()
 train_dataset, test_dataset = random_split(
     dataset=dataset,
     lengths=[25600, 6400],
-    generator=torch.Generator().manual_seed(1)
+    generator=torch.Generator().manual_seed(seed)
 )
 train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-model = NeuralNetwork().cuda()
-loss_fn = nn.CrossEntropyLoss().cuda()
-learning_rate = 0.001
-optimizer = torch.optim.Adam(model.parameters())
+# model = NeuralNetwork().cuda()
+# loss_fn = nn.CrossEntropyLoss().cuda()
+# learning_rate = 0.001
+# optimizer = torch.optim.Adam(model.parameters())
 # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-epoch = 20
-
-for i in range(epoch):
-    train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
-    test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
+# epoch = 20
+# for i in range(epoch):
+#     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
+#     test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
     # scheduler.step()
 #
 # for x, y in train_dataloader:
@@ -68,3 +70,5 @@ for i in range(epoch):
 # x = torch.randn(8, 2, 300, 3)
 # writer.add_graph(model, input_to_model=x)
 # writer.close()
+
+countDataDistribution(train_dataloader,test_dataloader)
