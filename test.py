@@ -11,7 +11,7 @@ import numpy as np
 from utils import countDataDistribution
 
 
-logdir = r'./run/exp9'
+logdir = r'./run/exp10'
 writer = SummaryWriter(log_dir=logdir)
 
 cuda = torch.device('cuda')
@@ -35,17 +35,22 @@ dataset = Dataset_SVC2004()
 
 train_dataset, test_dataset = random_split(
     dataset=dataset,
-    lengths=[25600, 6400],
+    # lengths=[25600, 6400],
+    lengths=[18880, 4720],
     generator=torch.Generator().manual_seed(seed)
 )
 train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-model = NeuralNetwork().cuda
+
+# model = NeuralNetwork()
+model = NeuralNetwork().cuda()
 loss_fn = nn.CrossEntropyLoss().cuda()
 learning_rate = 0.001
 optimizer = torch.optim.Adam(model.parameters())
-# scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
+# scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
+
+countDataDistribution(train_dataloader, test_dataloader)
 
 epoch = 40
 for i in range(epoch):
@@ -71,4 +76,4 @@ for i in range(epoch):
 # writer.add_graph(model, input_to_model=x)
 # writer.close()
 
-# countDataDistribution(train_dataloader, test_dataloader)
+

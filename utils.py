@@ -1,12 +1,13 @@
 import os
 import matplotlib.pyplot as plt
 import matplotlib
-from itertools import product
+from itertools import product, combinations
 import numpy as np
 import cv2
 import time
 import torch.nn as nn
 import torch
+
 
 
 # 统计时打开
@@ -207,7 +208,7 @@ def mixTxtSameWriter(usernum: int):
             labelSigList.append('U' + str(userId) + 'S' + str(i))
         for j in range(21, 41):
             testSigList.append('U' + str(userId) + 'S' + str(j))
-        trueRes = product(labelSigList, labelSigList)
+        trueRes = combinations(labelSigList,2)
         falseRes = product(labelSigList, testSigList)
         for x, y in list(trueRes):
             resList.append([x, y, 1])
@@ -388,7 +389,9 @@ def countDataDistribution(train_dataloader, test_dataloader):
 
 
 if __name__ == '__main__':
-    pass
+    lst = mixTxtSameWriter(40)
+    print(lst)
+    print(len(lst))
 
     # mixTxtSameWriter(1)
     # a = torch.randn(4, 1, 128)
