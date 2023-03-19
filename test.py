@@ -1,4 +1,4 @@
-from models.model5 import NeuralNetwork
+from models.model7 import NeuralNetwork
 from data import Dataset_SVC2004
 from torch.utils.data import DataLoader
 from train import train, test
@@ -11,10 +11,10 @@ import numpy as np
 from utils import countDataDistribution
 
 
-# logdir = r'./run/exp9'
-# writer = SummaryWriter(log_dir=logdir)
+logdir = r'./run/exp9'
+writer = SummaryWriter(log_dir=logdir)
 
-# cuda = torch.device('cuda')
+cuda = torch.device('cuda')
 
 
 def setup_seed(seed):
@@ -41,16 +41,16 @@ train_dataset, test_dataset = random_split(
 train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-# model = NeuralNetwork().cuda()
-# loss_fn = nn.CrossEntropyLoss().cuda()
-# learning_rate = 0.001
-# optimizer = torch.optim.Adam(model.parameters())
+model = NeuralNetwork().cuda
+loss_fn = nn.CrossEntropyLoss().cuda()
+learning_rate = 0.001
+optimizer = torch.optim.Adam(model.parameters())
 # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-# epoch = 20
-# for i in range(epoch):
-#     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
-#     test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
+epoch = 40
+for i in range(epoch):
+    train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
+    test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
     # scheduler.step()
 #
 # for x, y in train_dataloader:
@@ -59,7 +59,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 #     print(x2.shape)
 #     res = model(x)
 #     print(res.shape)
-#     print(res)
+#     # print(res)
 #     print(y.shape)
 #     print(y)
 #     break
@@ -71,4 +71,4 @@ test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 # writer.add_graph(model, input_to_model=x)
 # writer.close()
 
-countDataDistribution(train_dataloader,test_dataloader)
+# countDataDistribution(train_dataloader, test_dataloader)
