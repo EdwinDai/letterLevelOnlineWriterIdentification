@@ -107,19 +107,26 @@ def trim2length(coordinate):
     return coordinate
 
 
-def calcSeqLength(rootPath):
+def calcSeqLength(icdartraintruepath):
     '''
         统计数据集中各签名序列长度
         :param rootPath:str
         :return list:int
         '''
-    txtNameList = os.listdir(rootPath)
+    # txtNameList = os.listdir(rootPath)
+    txtNameList1 = os.listdir(icdartraintruepath)
+    txtNameList2 = os.listdir(icdartrainfalsepath)
     countList = []
-    for txtName in txtNameList:
-        txtPath = os.path.join(rootPath, txtName)
+    for txtName in txtNameList1:
+        txtPath = os.path.join(icdartraintruepath, txtName)
         with open(txtPath) as f:
-            length = int(f.readline())
-            countList.append(length)
+            lenth = len(f.readlines())
+            countList.append(lenth)
+    for txtName in txtNameList2:
+        txtPath = os.path.join(icdartrainfalsepath, txtName)
+        with open(txtPath) as f:
+            lenth = len(f.readlines())
+            countList.append(lenth)
     return countList
 
 
@@ -424,9 +431,12 @@ def countDataDistribution(train_dataloader, test_dataloader):
 
 
 if __name__ == '__main__':
-    readicdar(icdartraintruepath,icdartrainfalsepath)
+    # readicdar(icdartraintruepath,icdartrainfalsepath)
 
-    # mixTxtSameWriter(1)
+    calcSeqLength(icdartraintruepath)
+
+
+# mixTxtSameWriter(1)
     # a = torch.randn(4, 1, 128)
     # b = torch.randn(64, 32)
     # conv1 = nn.Conv1d(1, 16, 3, padding=1)
