@@ -9,7 +9,6 @@ import torch.nn as nn
 import torch
 
 
-
 # 统计时打开
 # matplotlib.use('TkAgg')
 # matplotlib.rc("font", family='Microsoft YaHei')
@@ -208,7 +207,9 @@ def mixTxtSameWriter(usernum: int):
             labelSigList.append('U' + str(userId) + 'S' + str(i))
         for j in range(21, 41):
             testSigList.append('U' + str(userId) + 'S' + str(j))
-        trueRes = combinations(labelSigList,2)
+        # trueRes = combinations(labelSigList, 2)
+
+        trueRes = product(labelSigList, labelSigList)
         falseRes = product(labelSigList, testSigList)
         for x, y in list(trueRes):
             resList.append([x, y, 1])
@@ -381,7 +382,7 @@ def countDataDistribution(train_dataloader, test_dataloader):
 
     print(f"训练集正标签数量: {true_label1}")
     print(f"训练集负标签数量: {false_label1}")
-    print(f"训练集正负比例: {true_label1/false_label1}")
+    print(f"训练集正负比例: {true_label1 / false_label1}")
 
     print(f"测试集负标签数量: {true_label2}")
     print(f"测试集负标签数量: {false_label2}")

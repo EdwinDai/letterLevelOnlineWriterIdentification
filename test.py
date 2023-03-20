@@ -11,7 +11,7 @@ import numpy as np
 from utils import countDataDistribution
 
 
-logdir = r'./run/exp10'
+logdir = r'./run/exp11'
 writer = SummaryWriter(log_dir=logdir)
 
 cuda = torch.device('cuda')
@@ -35,8 +35,8 @@ dataset = Dataset_SVC2004()
 
 train_dataset, test_dataset = random_split(
     dataset=dataset,
-    # lengths=[25600, 6400],
-    lengths=[18880, 4720],
+    lengths=[25600, 6400],
+    # lengths=[18880, 4720],
     generator=torch.Generator().manual_seed(seed)
 )
 train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
