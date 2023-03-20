@@ -20,7 +20,7 @@ class NeuralNetwork(nn.Module):
         self.relu = nn.ReLU()
 
         self.conv1 = nn.Sequential(
-            nn.Conv1d(300, 32, 3, padding=1),
+            nn.Conv1d(900, 32, 3, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
 
@@ -55,16 +55,16 @@ class NeuralNetwork(nn.Module):
         y1 = self.dropout(y1)
         y1, _ = self.lstm2(y1)
         y1 = self.dropout(y1)
-        y1 = y1[:, -1, :]  # [-1,1,128]
+        y1 = y1[:, -1, :]  # [-1,1,96]
 
-        y2 = self.conv1(x) #[-1,32,3]
-        y21 = y2.view(-1, 1, 256)
+        y2 = self.conv1(x)  # [-1,32,3]
+        y21 = y2.view(-1, 1, 96)
 
-        y22 = self.residual(y2)  # [-1,32,8]
-        y22 = y22.view(-1, 1, 256)
+        y22 = self.residual(y2)  # [-1,32,3]
+        y22 = y22.view(-1, 1, 96)
 
         y2 = self.relu(y21 + y22)
-        # y2 = self.avePool(y2)  # [-1,1,128]
+        # y2 = self.avePool(y2)  # [-1,1,96]
         y2 = y2.view(-1, 96)
 
         y = y1 + y2
@@ -80,7 +80,6 @@ class NeuralNetwork(nn.Module):
         y1 = self.forward_once(x1)
         y2 = self.forward_once(x2)
         y = torch.concat([y1, y2], dim=-1)
-        y = torch.squeeze(y)
         y = self.linear1(y)
         y = self.linear2(y)
         y = self.softmax(y)

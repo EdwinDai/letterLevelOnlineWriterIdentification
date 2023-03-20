@@ -47,6 +47,7 @@ class Dataset_SVC2004(Dataset):
 
 if __name__ == '__main__':
     dataset = Dataset_SVC2004()
+    print(len(dataset))
     train_dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
     for x, y in train_dataloader:
         x1, x2 = x

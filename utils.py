@@ -9,8 +9,8 @@ import torch.nn as nn
 import torch
 
 # 统计时打开
-# matplotlib.use('TkAgg')
-# matplotlib.rc("font", family='Microsoft YaHei')
+matplotlib.use('TkAgg')
+matplotlib.rc("font", family='Microsoft YaHei')
 
 # rootPath = r'Task1'
 
@@ -98,12 +98,12 @@ def parseTxt2data(filePath):
 
 
 def trim2length(coordinate):
-    while (len(coordinate) < 300):
+    while (len(coordinate) < 900):
         coordinate.append([0, 0, 0])
         # coordinate.append([0, 0, 0, 0, 0, 0, 0, 0])
 
-    if len(coordinate) > 300:
-        coordinate = coordinate[:300]
+    if len(coordinate) > 900:
+        coordinate = coordinate[:900]
     return coordinate
 
 
@@ -216,7 +216,7 @@ def showStatistics(rootPath: str, method: str):
         data = calcSeqLength(rootPath)
         x = '序列长度'
         y = '序列数量'
-        d = 30
+        d = 70
     elif method == 'calcSigSize':
         data = calcSeqLength(rootPath)
         x = '签名尺寸'
@@ -433,7 +433,8 @@ def countDataDistribution(train_dataloader, test_dataloader):
 if __name__ == '__main__':
     # readicdar(icdartraintruepath,icdartrainfalsepath)
 
-    calcSeqLength(icdartraintruepath)
+    # calcSeqLength(icdartraintruepath)
+    showStatistics(icdartraintruepath,'calcSeqLength')
 
 
 # mixTxtSameWriter(1)

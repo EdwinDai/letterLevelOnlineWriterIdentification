@@ -1,4 +1,4 @@
-from models.model7 import NeuralNetwork
+from models.model5 import NeuralNetwork
 from data import Dataset_SVC2004
 from torch.utils.data import DataLoader
 from train import train, test
@@ -35,7 +35,7 @@ dataset = Dataset_SVC2004()
 
 train_dataset, test_dataset = random_split(
     dataset=dataset,
-    lengths=[25600, 6400],
+    lengths=[12162, 3040],
     # lengths=[18880, 4720],
     generator=torch.Generator().manual_seed(seed)
 )
