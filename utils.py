@@ -8,7 +8,6 @@ import time
 import torch.nn as nn
 import torch
 
-
 # 统计时打开
 # matplotlib.use('TkAgg')
 # matplotlib.rc("font", family='Microsoft YaHei')
@@ -25,6 +24,39 @@ import torch
 # fileName = 'U15S3.TXT'
 # destaddr = r'E:\file\Code\Python\datasets\Task1'
 
+icdartraintruepath = r'ICDAR2011/train/Online Genuine'
+icdartrainfalsepath = r'ICDAR2011/train/Online Forgeries'
+
+
+def readicdar(icdartraintruepath, icdartrainfalsepath):
+    icdartruedict = {'001': [], '002': [], '003': [], '004': [], '005': [], '006': [], '007': [], '008': [], '009': [],
+                     '010': []}
+    icdarfalsedict = {'001': [], '002': [], '003': [], '004': [], '005': [], '006': [], '007': [], '008': [], '009': [],
+                      '010': []}
+    sigtruelist = os.listdir(icdartraintruepath)
+    sigfalselist = os.listdir(icdartrainfalsepath)
+    # 按作者id加入字典
+    for sig in sigtruelist:
+        writerid, sigid = sig.split('_')
+        icdartruedict[str(writerid)].append(sig)
+    for sig in sigfalselist:
+        writerid, sigid = sig.split('_')
+        writerid = writerid[4:]
+        icdarfalsedict[str(writerid)].append(sig)
+
+    # 按作者ID真签名混合
+    restrueList = []
+    resfalseList = []
+    reslist = []
+    for key, values in icdartruedict.items():
+        trueRes = product(values, values)
+        for x, y in list(trueRes):
+            reslist.append([x, y, 1])
+    for key, values in icdarfalsedict.items():
+        falseRes = product(icdartruedict[str(key)],values)
+        for x, y in list(falseRes):
+            reslist.append([x, y, 0])
+    return reslist
 
 def isGenuineOrForgery(fileName):
     '''
@@ -49,11 +81,13 @@ def parseTxt2data(filePath):
     with open(filePath) as f:
         coordinate = []
         txt = f.readlines()
-        txt = txt[1:]
+        # txt = txt[1:]
         for idx, line in enumerate(txt):
             lineData = line.split(' ')
             # 3维数据
-            coordinate.append([float(lineData[0]), float(lineData[1]), float(lineData[3])])
+            # coordinate.append([float(lineData[0]), float(lineData[1]), float(lineData[3])])
+            # icdar2011
+            coordinate.append([float(lineData[0]), float(lineData[1]), float(lineData[2])])
             # 8维数据
             # coordinate.append(
             #     [float(lineData[0]), float(lineData[1]), float(lineData[2]), float(lineData[3]), float(lineData[4]),
@@ -251,8 +285,8 @@ def move2TopLeft(fileaddr):
     :param rootPath:
     :return:
     '''
-    xmin = 9999
-    ymin = 9999
+    xmin = 99999
+    ymin = 99999
     xmax = 0
     ymax = 0
     signature = parseTxt2data(fileaddr)
@@ -390,9 +424,7 @@ def countDataDistribution(train_dataloader, test_dataloader):
 
 
 if __name__ == '__main__':
-    lst = mixTxtSameWriter(40)
-    print(lst)
-    print(len(lst))
+    readicdar(icdartraintruepath,icdartrainfalsepath)
 
     # mixTxtSameWriter(1)
     # a = torch.randn(4, 1, 128)
