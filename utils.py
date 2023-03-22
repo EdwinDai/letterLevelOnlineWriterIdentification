@@ -9,8 +9,8 @@ import torch.nn as nn
 import torch
 
 # 统计时打开
-matplotlib.use('TkAgg')
-matplotlib.rc("font", family='Microsoft YaHei')
+# matplotlib.use('TkAgg')
+# matplotlib.rc("font", family='Microsoft YaHei')
 
 # rootPath = r'Task1'
 

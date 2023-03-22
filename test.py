@@ -52,7 +52,7 @@ optimizer = torch.optim.Adam(model.parameters())
 
 countDataDistribution(train_dataloader, test_dataloader)
 
-epoch = 40
+epoch = 30
 for i in range(epoch):
     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
     test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
