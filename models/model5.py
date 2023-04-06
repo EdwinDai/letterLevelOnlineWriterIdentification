@@ -20,7 +20,7 @@ class NeuralNetwork(nn.Module):
         self.relu = nn.ReLU()
 
         self.conv1 = nn.Sequential(
-            nn.Conv1d(900, 32, 3, padding=1),
+            nn.Conv1d(300, 32, 3, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
 
