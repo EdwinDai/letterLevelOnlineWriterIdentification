@@ -1,5 +1,5 @@
-from models.model5 import NeuralNetwork
-from data import Dataset_SVC2004
+from models.model7 import NeuralNetwork
+from data import Dataset_SVC2004_train,Dataset_SVC2004_test
 from torch.utils.data import DataLoader
 from train import train, test
 from torch import nn
@@ -11,7 +11,7 @@ import numpy as np
 from utils import countDataDistribution
 
 
-logdir = r'./run/exp11'
+logdir = r'./run/exp12'
 writer = SummaryWriter(log_dir=logdir)
 
 cuda = torch.device('cuda')
@@ -29,16 +29,19 @@ seed = 1
 
 setup_seed(seed)
 
-dataset = Dataset_SVC2004()
+# dataset = Dataset_SVC2004()
 # dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
 
 
-train_dataset, test_dataset = random_split(
-    dataset=dataset,
-    lengths=[12162, 3040],
-    # lengths=[18880, 4720],
-    generator=torch.Generator().manual_seed(seed)
-)
+# train_dataset, test_dataset = random_split(
+#     dataset=dataset,
+#     lengths=[12162, 3040],
+#     # lengths=[18880, 4720],
+#     generator=torch.Generator().manual_seed(seed)
+# )
+
+train_dataset = Dataset_SVC2004_train()
+test_dataset = Dataset_SVC2004_test()
 train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
@@ -50,7 +53,7 @@ learning_rate = 0.001
 optimizer = torch.optim.Adam(model.parameters())
 # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
 
-countDataDistribution(train_dataloader, test_dataloader)
+# countDataDistribution(train_dataloader, test_dataloader)
 
 epoch = 30
 for i in range(epoch):

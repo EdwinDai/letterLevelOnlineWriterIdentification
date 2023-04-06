@@ -81,13 +81,13 @@ def parseTxt2data(filePath):
     with open(filePath) as f:
         coordinate = []
         txt = f.readlines()
-        # txt = txt[1:]
+        txt = txt[1:]
         for idx, line in enumerate(txt):
             lineData = line.split(' ')
             # 3维数据
-            # coordinate.append([float(lineData[0]), float(lineData[1]), float(lineData[3])])
+            coordinate.append([float(lineData[0]), float(lineData[1]), float(lineData[3])])
             # icdar2011
-            coordinate.append([float(lineData[0]), float(lineData[1]), float(lineData[2])])
+            # coordinate.append([float(lineData[0]), float(lineData[1]), float(lineData[2])])
             # 8维数据
             # coordinate.append(
             #     [float(lineData[0]), float(lineData[1]), float(lineData[2]), float(lineData[3]), float(lineData[4]),
@@ -98,12 +98,12 @@ def parseTxt2data(filePath):
 
 
 def trim2length(coordinate):
-    while (len(coordinate) < 900):
+    while (len(coordinate) < 300):
         coordinate.append([0, 0, 0])
         # coordinate.append([0, 0, 0, 0, 0, 0, 0, 0])
 
-    if len(coordinate) > 900:
-        coordinate = coordinate[:900]
+    if len(coordinate) > 300:
+        coordinate = coordinate[:300]
     return coordinate
 
 
@@ -234,14 +234,14 @@ def showStatistics(rootPath: str, method: str):
     plt.show()
 
 
-def mixTxtSameWriter(usernum: int):
+def mixTxtSameWriter(startnum:int, endnum: int):
     '''
     对签名进行两两配对(同一作者名下genuine and skilled forgery)
     :param UserId:
     :return: list[[Sig1,Sig1],[Sig1,Sig2]...]
     '''
     resList = []
-    for userId in range(1, usernum + 1):
+    for userId in range(startnum, endnum + 1):
         labelSigList = []
         testSigList = []
         for i in range(1, 21):
