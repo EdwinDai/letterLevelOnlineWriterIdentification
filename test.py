@@ -1,4 +1,4 @@
-from models.model7 import NeuralNetwork
+from models.model5 import NeuralNetwork
 from data import Dataset_SVC2004_train,Dataset_SVC2004_test
 from torch.utils.data import DataLoader
 from train import train, test
@@ -11,7 +11,7 @@ import numpy as np
 from utils import countDataDistribution
 
 
-logdir = r'./run/exp12'
+logdir = r'./run/exp13'
 writer = SummaryWriter(log_dir=logdir)
 
 cuda = torch.device('cuda')
