@@ -1,5 +1,5 @@
-from models.model5 import NeuralNetwork
-from data import Dataset_SVC2004_train,Dataset_SVC2004_test
+from models.model8transformer import NeuralNetwork
+from data import Dataset_SVC2004_train, Dataset_SVC2004_test
 from torch.utils.data import DataLoader
 from train import train, test
 from torch import nn
@@ -10,8 +10,7 @@ import random
 import numpy as np
 from utils import countDataDistribution
 
-
-logdir = r'./run/exp13'
+logdir = r'./run/exp14'
 writer = SummaryWriter(log_dir=logdir)
 
 cuda = torch.device('cuda')
@@ -42,9 +41,8 @@ setup_seed(seed)
 
 train_dataset = Dataset_SVC2004_train()
 test_dataset = Dataset_SVC2004_test()
-train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
-
+train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
 # model = NeuralNetwork()
 model = NeuralNetwork().cuda()
@@ -67,10 +65,10 @@ for i in range(epoch):
 #     print(x2.shape)
 #     res = model(x)
 #     print(res.shape)
-#     # print(res)
-#     print(y.shape)
-#     print(y)
-#     break
+# print(res)
+# print(y.shape)
+# print(y)
+# break
 # paras = model.parameters()
 # total = sum([param.nelement() for param in model.parameters()])
 # print("Number of parameter: %.2fM" % (total / 1e6))
@@ -78,5 +76,3 @@ for i in range(epoch):
 # x = torch.randn(8, 2, 300, 3)
 # writer.add_graph(model, input_to_model=x)
 # writer.close()
-
-
