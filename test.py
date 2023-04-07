@@ -1,4 +1,4 @@
-from models.model9transformer2 import NeuralNetwork
+from models.model10transformer2Embed import NeuralNetwork
 from data import Dataset_SVC2004_train, Dataset_SVC2004_test
 from torch.utils.data import DataLoader
 from train import train, test
