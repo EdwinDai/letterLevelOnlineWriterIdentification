@@ -1,5 +1,5 @@
-model5
-batch 64 epoch30
+model8
+batch 32 epoch30
 随机1
 [真签名，仿写签名]
 孪生网络输出拼接

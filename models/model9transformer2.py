@@ -9,52 +9,39 @@ from torchvision import datasets, transforms
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
-        self.lstm1 = nn.LSTM(input_size=3, hidden_size=32, num_layers=2,
+        self.lstm1 = nn.LSTM(input_size=48, hidden_size=32, num_layers=2,
                              bidirectional=True)
         self.lstm2 = nn.LSTM(input_size=64, hidden_size=48, num_layers=2,
                              bidirectional=True)
-        self.dropout = nn.Dropout(p=0.2)
-        self.transformer = nn.TransformerEncoder(nn.TransformerEncoderLayer(24, 4, 32), num_layers=2)
+        self.dropout = nn.Dropout(p=0.5)
+        self.transformer = nn.TransformerEncoder(nn.TransformerEncoderLayer(48, 4, 32), num_layers=2)
 
         self.avePool = nn.AvgPool1d(2)
         self.softmax = nn.Softmax(dim=-1)
         self.relu = nn.ReLU()
 
-        self.linear3 = nn.Linear(3, 24)
+        self.linear3 = nn.Linear(3, 48)
 
-        self.linear1 = nn.Linear(192, 48)
-        self.linear2 = nn.Linear(48, 2)
-
-        self.conv1 = nn.Sequential(
-            nn.Conv1d(300, 32, 8, stride=8),
-            nn.BatchNorm1d(32),
-            nn.ReLU()
-        )
+        self.linear1 = nn.Linear(192, 96)
+        self.linear2 = nn.Linear(96, 2)
 
     def forward_once(self, x):
-        # 上路
-        y1, _ = self.lstm1(x)
+        y2 = self.linear3(x)  # [-1,300,48]
+        # y2 = y2.permute(1, 0, 2)
+        y2 = self.transformer(y2)
+
+        y1, _ = self.lstm1(y2)
         y1 = self.dropout(y1)
         y1, _ = self.lstm2(y1)
         y1 = self.dropout(y1)
         y1 = y1[:, -1, :]  # [-1,1,96]
 
-        # 下路
-        y2 = self.linear3(x)  # [-1,300,48]
-        # y2 = y2.permute(1, 0, 2)
-        y2 = self.transformer(y2)
-        y2 = self.conv1(y2)
-        y2 = y2.view(-1, 96)
-
-        # 合并
-        y3 = self.relu(y1 + y2)
-
-        return y3
+        return y1
 
     def forward(self, x):
         x1, x2 = x
-        # x1 = x1.cuda()
-        # x2 = x2.cuda()
+        x1 = x1.cuda()
+        x2 = x2.cuda()
         # x1 = x[:, 0]
         # x2 = x[:, 1]
 

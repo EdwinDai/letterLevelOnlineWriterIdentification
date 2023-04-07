@@ -1,4 +1,4 @@
-from models.model8transformer import NeuralNetwork
+from models.model9transformer2 import NeuralNetwork
 from data import Dataset_SVC2004_train, Dataset_SVC2004_test
 from torch.utils.data import DataLoader
 from train import train, test
@@ -10,10 +10,10 @@ import random
 import numpy as np
 from utils import countDataDistribution
 
-logdir = r'./run/exp14'
+logdir = r'./run/exp15'
 writer = SummaryWriter(log_dir=logdir)
-
-cuda = torch.device('cuda')
+#
+# cuda = torch.device('cuda')
 
 
 def setup_seed(seed):
@@ -68,7 +68,7 @@ for i in range(epoch):
 # print(res)
 # print(y.shape)
 # print(y)
-# break
+#     break
 # paras = model.parameters()
 # total = sum([param.nelement() for param in model.parameters()])
 # print("Number of parameter: %.2fM" % (total / 1e6))
