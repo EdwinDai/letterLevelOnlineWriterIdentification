@@ -38,22 +38,16 @@ class NeuralNetwork(nn.Module):
         y1, _ = self.lstm2(y1)
         y1 = self.dropout(y1)
         y1 = y1[:, -1, :]  # [-1,1,96]
-        print('y1', y1.shape)
 
         # 下路
         y2 = self.linear3(x)  # [-1,300,48]
-        print('linear', y2.shape)
         # y2 = y2.permute(1, 0, 2)
         y2 = self.transformer(y2)
-        print('trans', y2.shape)
         y2 = self.conv1(y2)
-        print('conv1', y2.shape)
         y2 = y2.view(-1, 96)
-        print('view', y2.shape)
 
         # 合并
         y3 = self.relu(y1 + y2)
-        print('y3', y3.shape)
 
         return y3
 
