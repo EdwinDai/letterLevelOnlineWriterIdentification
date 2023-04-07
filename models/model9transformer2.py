@@ -13,7 +13,7 @@ class NeuralNetwork(nn.Module):
                              bidirectional=True)
         self.lstm2 = nn.LSTM(input_size=64, hidden_size=48, num_layers=2,
                              bidirectional=True)
-        self.dropout = nn.Dropout(p=0.5)
+        self.dropout = nn.Dropout(p=0.2)
         self.transformer = nn.TransformerEncoder(nn.TransformerEncoderLayer(48, 4, 32), num_layers=2)
 
         self.avePool = nn.AvgPool1d(2)
