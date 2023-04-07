@@ -10,7 +10,7 @@ import random
 import numpy as np
 from utils import countDataDistribution
 
-logdir = r'./run/exp15'
+logdir = r'./run/exp16'
 writer = SummaryWriter(log_dir=logdir)
 #
 # cuda = torch.device('cuda')
