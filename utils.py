@@ -8,6 +8,7 @@ import time
 import torch.nn as nn
 import torch
 
+
 # 统计时打开
 # matplotlib.use('TkAgg')
 # matplotlib.rc("font", family='Microsoft YaHei')
@@ -24,8 +25,8 @@ import torch
 # fileName = 'U15S3.TXT'
 # destaddr = r'E:\file\Code\Python\datasets\Task1'
 
-icdartraintruepath = r'ICDAR2011/train/Online Genuine'
-icdartrainfalsepath = r'ICDAR2011/train/Online Forgeries'
+# icdartraintruepath = r'ICDAR2011/train/Online Genuine'
+# icdartrainfalsepath = r'ICDAR2011/train/Online Forgeries'
 
 
 def readicdar(icdartraintruepath, icdartrainfalsepath):
@@ -53,10 +54,11 @@ def readicdar(icdartraintruepath, icdartrainfalsepath):
         for x, y in list(trueRes):
             reslist.append([x, y, 1])
     for key, values in icdarfalsedict.items():
-        falseRes = product(icdartruedict[str(key)],values)
+        falseRes = product(icdartruedict[str(key)], values)
         for x, y in list(falseRes):
             reslist.append([x, y, 0])
     return reslist
+
 
 def isGenuineOrForgery(fileName):
     '''
@@ -234,7 +236,7 @@ def showStatistics(rootPath: str, method: str):
     plt.show()
 
 
-def mixTxtSameWriter(startnum:int, endnum: int):
+def mixTxtSameWriter(startnum: int, endnum: int):
     '''
     对签名进行两两配对(同一作者名下genuine and skilled forgery)
     :param UserId:
@@ -386,7 +388,8 @@ def drawSig(fileaddr, picName):
         if sig[i][3] != 0:
             cv2.line(image, (sig[i][0], 9999 - sig[i][1]), (sig[i + 1][0], 9999 - sig[i + 1][1]), (255, 0, 0), 3)  # 画直线
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # 色彩空间转换
-    cv2.imwrite(os.path.join(picAddr, picName + '.jpg'), image)
+    cv2.imshow('Image', image)
+    # cv2.imwrite(os.path.join(picAddr, picName + '.jpg'), image)
 
 
 def get_parameters(sig, i):
@@ -430,40 +433,81 @@ def countDataDistribution(train_dataloader, test_dataloader):
     print(f"测试集正负比例: {true_label2 / false_label2}")
 
 
+def mixJpgAABWriter(startnum: int, endnum: int):
+    '''
+        对签名进行三配对(同一作者名下genuine and skilled forgery)
+        :param UserId:
+        :return: list[[Sig1,Sig1],[Sig1,Sig2]...]
+        '''
+    resList = []
+    for userId in range(startnum, endnum + 1):
+        anchorSigList = []
+        trueSigList = []
+        fakeSigList = []
+        for i in range(1, 10):
+            anchorSigList.append('U' + str(userId) + 'S' + str(i))
+        for j in range(1, 10):
+            trueSigList.append('U' + str(userId) + 'S' + str(j))
+        for k in range(21, 28):
+            fakeSigList.append('U' + str(userId) + 'S' + str(k))
+        # trueRes = combinations(labelSigList, 2)
+
+        trueRes = product(anchorSigList, trueSigList, trueSigList)
+        for x, y, z in list(trueRes):
+            if x == y or x == z or y == z:
+                continue
+            resList.append([x, y, z, 1])
+
+        falseRes = product(anchorSigList, trueSigList, fakeSigList)
+        for x, y, z in list(falseRes):
+            if x == y or x == z or y == z:
+                continue
+            resList.append([x, y, z, -1])
+
+    return resList
+
+
 if __name__ == '__main__':
     # readicdar(icdartraintruepath,icdartrainfalsepath)
 
     # calcSeqLength(icdartraintruepath)
-    showStatistics(icdartraintruepath,'calcSeqLength')
+    # showStatistics(icdartraintruepath,'calcSeqLength')
+    # drawSig('Task2/U1S1.TXT', 'icdartraintruepath')
 
+    a = mixJpgAABWriter(1, 32)
+    print(len(a))
+    for i, item in enumerate(a):
+        if i == 10:
+            break
+        print(item)
 
 # mixTxtSameWriter(1)
-    # a = torch.randn(4, 1, 128)
-    # b = torch.randn(64, 32)
-    # conv1 = nn.Conv1d(1, 16, 3, padding=1)
-    # conv2 = nn.Conv1d(16, 16, 3, padding=1)
-    # maxpool = nn.MaxPool1d(2)
-    # c = conv1(a)
-    # c = maxpool(c)
-    # print(c.shape)
-    # c = conv2(c)
-    # print(c.shape)
+# a = torch.randn(4, 1, 128)
+# b = torch.randn(64, 32)
+# conv1 = nn.Conv1d(1, 16, 3, padding=1)
+# conv2 = nn.Conv1d(16, 16, 3, padding=1)
+# maxpool = nn.MaxPool1d(2)
+# c = conv1(a)
+# c = maxpool(c)
+# print(c.shape)
+# c = conv2(c)
+# print(c.shape)
 
-    # 生成8params签名
-    # newPath = r'E:\file\Code\Python\datasets\Task1\Task1Para8'
-    # txtNameList = os.listdir(rootPath)
-    # for txtName in txtNameList:
-    #     txt_path = os.path.join(rootPath, txtName)
-    #     sig = move2TopLeft(fileaddr)
-    #     sig = normalizeSig1(sig)
-    #     with open(os.path.join(newPath, txtName), 'a') as f:
-    #         for i in range(len(sig) - 1):
-    #             sig[i] = get_parameters(sig, i)
-    #             my_string = ' '.join(map(str, sig[i]))
-    #             f.write(my_string + '\n')
+# 生成8params签名
+# newPath = r'E:\file\Code\Python\datasets\Task1\Task1Para8'
+# txtNameList = os.listdir(rootPath)
+# for txtName in txtNameList:
+#     txt_path = os.path.join(rootPath, txtName)
+#     sig = move2TopLeft(fileaddr)
+#     sig = normalizeSig1(sig)
+#     with open(os.path.join(newPath, txtName), 'a') as f:
+#         for i in range(len(sig) - 1):
+#             sig[i] = get_parameters(sig, i)
+#             my_string = ' '.join(map(str, sig[i]))
+#             f.write(my_string + '\n')
 
-    # sig = parseTxt2data(fileaddr)
-    # print(sig)
+# sig = parseTxt2data(fileaddr)
+# print(sig)
 
 # showStatistics(rootPath, 'calcSigSize')
 # txtNameList = os.listdir(rootPath).0
@@ -471,7 +515,6 @@ if __name__ == '__main__':
 #     fileaddr = os.path.join(rootPath, txtName)
 #     picName = txtName[:-4]
 #     drawSig(fileaddr, picName)
-
 #     break
 # picName = 'U1S1'
 # print(os.path.join(picAddr, picName+'.jpg'))

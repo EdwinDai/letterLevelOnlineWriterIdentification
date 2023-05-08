@@ -1,4 +1,4 @@
-from models.model10transformer2Embed import NeuralNetwork
+from models.model8transformer import NeuralNetwork
 from data import Dataset_SVC2004_train, Dataset_SVC2004_test
 from torch.utils.data import DataLoader
 from train import train, test
@@ -13,7 +13,7 @@ from utils import countDataDistribution
 logdir = r'./run/exp16'
 writer = SummaryWriter(log_dir=logdir)
 #
-# cuda = torch.device('cuda')
+cuda = torch.device('cuda')
 
 
 def setup_seed(seed):
