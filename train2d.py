@@ -7,6 +7,7 @@ def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
     print('Current Epoch:', currentEpoch)
     correct = 0
     size = len(dataloader.dataset)
+    train_loss = 0
     for batch, (X, y) in enumerate(dataloader):
         y = y.cuda()
         # Compute prediction and loss
@@ -16,11 +17,12 @@ def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
         num_equal = torch.eq(pred, y).sum().item()
         correct += num_equal
-        if batch % 252 == 0:
-            loss, current = loss.item(), (batch + 1) * 32
-            print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+        train_loss += loss.item()
+        if batch % 415 == 0:
+            print(f"loss: {loss:>7f}  [{(train_loss / batch / 8):>5d}/{size:>5d}]")
     correct /= size
     print(f"Train Error: \n Accuracy: {(100 * correct):>0.01f}%")
     writer.add_scalar(tag="loss/train",

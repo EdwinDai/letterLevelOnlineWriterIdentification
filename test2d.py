@@ -41,8 +41,8 @@ setup_seed(seed)
 
 train_dataset = Dataset_SVC2004_train()
 test_dataset = Dataset_SVC2004_test()
-train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
+train_dataloader = DataLoader(train_dataset, batch_size=8, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=8, shuffle=False)
 
 # model = NeuralNetwork()
 # loss_fn = My_loss()
@@ -74,7 +74,11 @@ for i in range(epoch):
 # paras = model.parameters()
 # total = sum([param.nelement() for param in model.parameters()])
 # print("Number of parameter: %.2fM" % (total / 1e6))
-
+# for name, param in model.named_parameters():
+#         if param.requires_grad:
+#             print(name + " is trainable")
+#         else:
+#             print(name + " is not trainable")
 # x = torch.randn(8, 2, 300, 3)
 # writer.add_graph(model, input_to_model=x)
 # writer.close()

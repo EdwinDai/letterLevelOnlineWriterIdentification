@@ -79,13 +79,13 @@ class Dataset_SVC2004_test(Dataset):
 
 
 if __name__ == '__main__':
-    dataset = Dataset_SVC2004_test()
+    dataset = Dataset_SVC2004_train()
     print(len(dataset))
-    train_dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
-    for x, y in train_dataloader:
-        x1, x2, x3 = x
-        print(x1.shape)
-        print(x2.shape)
-        print(x3.shape)
-        print(y.shape)
-        break
+    # train_dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
+    # for x, y in train_dataloader:
+    #     x1, x2, x3 = x
+    #     print(x1.shape)
+    #     print(x2.shape)
+    #     print(x3.shape)
+    #     print(y.shape)
+    #     break

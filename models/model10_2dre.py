@@ -146,9 +146,9 @@ class NeuralNetwork(nn.Module):
 
     def forward(self, x):
         anchor, pos, test = x
-        # anchor = anchor.cuda()
-        # pos = pos.cuda()
-        # test = test.cuda()
+        anchor = anchor.cuda()
+        pos = pos.cuda()
+        test = test.cuda()
 
         anchor = anchor.permute(0, 3, 1, 2).to(torch.float32)
         pos = pos.permute(0, 3, 1, 2).to(torch.float32)

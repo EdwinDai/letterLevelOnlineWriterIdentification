@@ -1,4 +1,4 @@
-from models.model8transformer import NeuralNetwork
+from models.model7 import NeuralNetwork
 from data import Dataset_SVC2004_train, Dataset_SVC2004_test
 from torch.utils.data import DataLoader
 from train import train, test
@@ -10,10 +10,10 @@ import random
 import numpy as np
 from utils import countDataDistribution
 
-logdir = r'./run/exp16'
-writer = SummaryWriter(log_dir=logdir)
-#
-cuda = torch.device('cuda')
+# logdir = r'./run/exp16'
+# writer = SummaryWriter(log_dir=logdir)
+# #
+# cuda = torch.device('cuda')
 
 
 def setup_seed(seed):
@@ -44,19 +44,19 @@ test_dataset = Dataset_SVC2004_test()
 train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
-# model = NeuralNetwork()
-model = NeuralNetwork().cuda()
-loss_fn = nn.CrossEntropyLoss().cuda()
-learning_rate = 0.001
-optimizer = torch.optim.Adam(model.parameters())
+model = NeuralNetwork()
+# model = NeuralNetwork().cuda()
+# loss_fn = nn.CrossEntropyLoss().cuda()
+# learning_rate = 0.001
+# optimizer = torch.optim.Adam(model.parameters())
 # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
 
 # countDataDistribution(train_dataloader, test_dataloader)
 
-epoch = 30
-for i in range(epoch):
-    train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
-    test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
+# epoch = 30
+# for i in range(epoch):
+#     train(train_dataloader, model, loss_fn, optimizer, writer=writer, currentEpoch=i)
+#     test(test_dataloader, model, loss_fn, currentEpoch=i, writer=writer)
     # scheduler.step()
 #
 # for x, y in train_dataloader:
@@ -69,9 +69,9 @@ for i in range(epoch):
 # print(y.shape)
 # print(y)
 #     break
-# paras = model.parameters()
-# total = sum([param.nelement() for param in model.parameters()])
-# print("Number of parameter: %.2fM" % (total / 1e6))
+paras = model.parameters()
+total = sum([param.nelement() for param in model.parameters()])
+print("Number of parameter: %.2fM" % (total / 1e6))
 
 # x = torch.randn(8, 2, 300, 3)
 # writer.add_graph(model, input_to_model=x)

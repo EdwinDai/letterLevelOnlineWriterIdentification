@@ -8,7 +8,6 @@ class My_loss(nn.Module):
         self.pdist = nn.PairwiseDistance(p=2)
 
     def forward(self, anchor, pos, test, y):
-        print('y', y)
         disa = self.pdist(anchor, pos)
         dist = self.pdist(anchor, test)
         minus = disa - dist
