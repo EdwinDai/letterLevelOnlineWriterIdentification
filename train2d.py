@@ -22,7 +22,9 @@ def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
         correct += num_equal
         train_loss += loss.item()
         if batch % 415 == 0:
-            print(f"loss: {loss:>7f}  [{(train_loss / batch / 8):>5d}/{size:>5d}]")
+            current = (batch + 1) * 8
+            losscurrent = train_loss / current
+            print(f"loss: {losscurrent:>7f}  [{current:>5d}/{size:>5d}]")
     correct /= size
     print(f"Train Error: \n Accuracy: {(100 * correct):>0.01f}%")
     writer.add_scalar(tag="loss/train",
