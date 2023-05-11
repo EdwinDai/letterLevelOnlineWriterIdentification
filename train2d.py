@@ -2,7 +2,7 @@ import torch
 import os
 
 
-def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
+def train(dataloader, model, loss_fn, optimizer, currentEpoch, writer):
     model.train()
     print('Current Epoch:', currentEpoch)
     correct = 0
@@ -42,7 +42,7 @@ def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
     # torch.save(model.state_dict(), path)
 
 
-def test(dataloader, model, loss_fn, writer, currentEpoch):
+def test(dataloader, model, loss_fn, currentEpoch, writer):
     model.eval()
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
