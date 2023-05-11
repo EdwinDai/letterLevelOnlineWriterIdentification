@@ -50,7 +50,7 @@ class Dataset_SVC2004_train(Dataset):
 
 class Dataset_SVC2004_test(Dataset):
     def __init__(self):
-        self.traintxtList = mixJpgAABWriter(3, 4)
+        self.traintxtList = mixJpgAABWriter(3, 3)
         # self.txtList = readicdar(icdartraintruepath, icdartrainfalsepath)
 
     def __getitem__(self, index):
