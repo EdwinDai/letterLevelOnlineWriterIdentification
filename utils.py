@@ -474,7 +474,7 @@ if __name__ == '__main__':
     # showStatistics(icdartraintruepath,'calcSeqLength')
     # drawSig('Task2/U1S1.TXT', 'icdartraintruepath')
 
-    a = mixJpgAABWriter(1, 32)
+    a = mixJpgAABWriter(1, 2)
     print(len(a))
     for i, item in enumerate(a):
         if i == 10:

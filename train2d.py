@@ -12,7 +12,7 @@ def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
         y = y.cuda()
         # Compute prediction and loss
         anchor, pos, test1 = model(X)
-        loss, pred = loss_fn(anchor, pos, test1, y)
+        loss, pred, disa, dist, minus = loss_fn(anchor, pos, test1, y)
         # Backpropagation
         optimizer.zero_grad()
         loss.backward()
@@ -21,7 +21,10 @@ def train(dataloader, model, loss_fn, optimizer, writer, currentEpoch):
         num_equal = torch.eq(pred, y).sum().item()
         correct += num_equal
         train_loss += loss.item()
-        if batch % 415 == 0:
+        if batch % 32 == 0:
+            print('disa', disa)
+            print('dist', dist)
+            print('minus', minus)
             current = (batch + 1) * 8
             losscurrent = train_loss / current
             print(f"loss: {losscurrent:>7f}  [{current:>5d}/{size:>5d}]")

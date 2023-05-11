@@ -10,12 +10,13 @@ class My_loss(nn.Module):
     def forward(self, anchor, pos, test, y):
         disa = self.pdist(anchor, pos)
         dist = self.pdist(anchor, test)
-        minus = disa - dist
+        minus = abs(dist - disa)
         mask = minus <= 1
         # pred = 1 if (disa - dist) <= 1 else 0
         pred = torch.where(mask, torch.ones_like(minus), -torch.ones_like(minus))
-        res = max(torch.tensor(0.0, requires_grad=True), torch.matmul(-y.to(torch.float32).t(), (minus)) + 1)
-        return res, pred
+        # res = max(torch.tensor(0.0, requires_grad=True), torch.matmul(-y.to(torch.float32).t(), (disa-dist)) + 0.01)
+        res = max(torch.tensor(0.0, requires_grad=True), (disa - dist) + 1)
+        return res, pred, disa, dist, minus
 
 
 if __name__ == '__main__':
