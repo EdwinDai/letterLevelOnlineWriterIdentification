@@ -11,7 +11,7 @@ import numpy as np
 from utils import countDataDistribution
 from My_loss import My_loss
 
-logdir = r'./run/exp16'
+logdir = r'./run/exp17'
 writer = SummaryWriter(log_dir=logdir)
 cuda = torch.device('cuda')
 
