@@ -20,7 +20,7 @@ rootPath = r'Task2Pics'
 
 class Dataset_SVC2004_train(Dataset):
     def __init__(self):
-        self.traintxtList = mixJpgAABWriter(1, 2)
+        self.traintxtList = mixJpgAABWriter(1, 33)
         # self.txtList = readicdar(icdartraintruepath, icdartrainfalsepath)
 
     def __getitem__(self, index):
@@ -50,7 +50,7 @@ class Dataset_SVC2004_train(Dataset):
 
 class Dataset_SVC2004_test(Dataset):
     def __init__(self):
-        self.traintxtList = mixJpgAABWriter(3, 3)
+        self.traintxtList = mixJpgAABWriter(34, 37)
         # self.txtList = readicdar(icdartraintruepath, icdartrainfalsepath)
 
     def __getitem__(self, index):
