@@ -41,8 +41,8 @@ setup_seed(seed)
 
 train_dataset = Dataset_SVC2004_train()
 test_dataset = Dataset_SVC2004_test()
-train_dataloader = DataLoader(train_dataset, batch_size=8, shuffle=True)
-test_dataloader = DataLoader(test_dataset, batch_size=8, shuffle=False)
+train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
 # model = NeuralNetwork()
 # loss_fn = My_loss()
