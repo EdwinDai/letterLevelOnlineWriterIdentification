@@ -21,12 +21,12 @@ def train(dataloader, model, loss_fn, optimizer, currentEpoch, writer):
         num_equal = torch.eq(pred, y).sum().item()
         correct += num_equal
         train_loss += loss.item()
-        if batch % 50 == 0:
+        if batch % 352 == 0:
             print('disa', disa)
             print('dist', dist)
             print('minus', minus)
             print('y', y)
-            current = (batch + 1) * 8
+            current = (batch + 1) * 16
             losscurrent = train_loss / current
             print(f"loss: {losscurrent:>7f}  [{current:>5d}/{size:>5d}]")
     correct /= size
