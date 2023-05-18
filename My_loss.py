@@ -10,8 +10,8 @@ class My_loss(nn.Module):
     def forward(self, anchor, pos, test, y):
         disa = self.pdist(anchor, pos)
         dist = self.pdist(anchor, test)
-        minus = dist - disa
-        mask = minus <= 0
+        minus = abs(dist - disa)
+        mask = minus <= 1
         # pred = 1 if (disa - dist) <= 1 else 0
         pred = torch.where(mask, torch.ones_like(minus), -torch.ones_like(minus))
         # res = torch.mean(torch.relu(torch.matmul(-y.to(torch.float32).t(), (disa - dist)) + 1))
