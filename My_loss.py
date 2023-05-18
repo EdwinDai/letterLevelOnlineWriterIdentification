@@ -14,8 +14,8 @@ class My_loss(nn.Module):
         mask = minus <= 1
         # pred = 1 if (disa - dist) <= 1 else 0
         pred = torch.where(mask, torch.ones_like(minus), -torch.ones_like(minus))
-        res = torch.mean(torch.relu(torch.matmul(-y.to(torch.float32).t(), (disa - dist)) + 1))
-        # res = torch.mean(torch.relu(disa - dist + 1))
+        # res = torch.mean(torch.relu(torch.matmul(-y.to(torch.float32).t(), (disa - dist)) + 1))
+        res = torch.mean(torch.relu(disa - dist + 1))
         return res, pred, disa, dist, minus, y
 
 
